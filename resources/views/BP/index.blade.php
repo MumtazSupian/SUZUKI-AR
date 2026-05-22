@@ -28,12 +28,84 @@
                 <option value="100">100 Baris</option>
                 <option value="200">200 Baris</option>
             </select>
-            <button class="btn-primary" onclick="openModal()" id="btnTambahData">Tambah Data</button>
+            <button class="btn-primary" onclick="openModal()" id="btnTambahData" style="background-color: #dc2626; border-color: #dc2626; color: #ffffff;">Tambah Data</button>
         </div>
     </div>
 
+    {{-- Style Khusus: Tabel (Merah-Putih) & Modal (Putih-Merah) --}}
+    <style>
+        /* 1. TEMA TABEL */
+        #piutangTable th, #piutangTable td {
+            border: 1px solid #b91c1c !important; /* Garis merah elegan antar kolom */
+        }
+        #piutangTable thead th {
+            color: #ffffff !important; /* Warna font judul putih */
+            background-color: #111a36 !important; /* Background judul gelap agar font putih jelas */
+        }
+        #piutangTable tbody td {
+            color: #111827 !important; /* Warna font isi tabel gelap pekat agar jelas */
+        }
+
+        /* 2. TEMA MODAL / FORM CREATE (PUTIH & MERAH) */
+        .modal {
+            background-color: #ffffff !important; /* Latar belakang putih */
+            border: 2px solid #dc2626 !important;
+            box-shadow: 0 25px 50px -12px rgba(220, 38, 38, 0.25) !important;
+        }
+        .modal-header {
+            border-bottom: 1px solid #fee2e2 !important;
+            background: #ffffff !important;
+        }
+        .modal-title {
+            color: #dc2626 !important; /* Judul modal merah */
+            font-weight: 700 !important;
+        }
+        .modal-body {
+            background-color: #ffffff !important;
+        }
+        .form-label {
+            color: #111827 !important; /* Label font gelap agar jelas */
+            font-weight: 600 !important;
+            margin-bottom: 6px !important;
+            display: block;
+        }
+        .form-input, .form-select {
+            background-color: #ffffff !important; /* Input background putih */
+            border: 1px solid #d1d5db !important; /* Border abu standar */
+            color: #111827 !important; /* Tulisan input gelap */
+        }
+        .form-input:focus, .form-select:focus {
+            border-color: #dc2626 !important; /* Saat diklik berubah merah */
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1) !important;
+            outline: none;
+        }
+        .modal-footer {
+            background-color: #f9fafb !important;
+            border-top: 1px solid #fee2e2 !important;
+        }
+        .btn-primary {
+            background-color: #dc2626 !important; /* Tombol Simpan Merah */
+            border-color: #dc2626 !important;
+            color: #ffffff !important;
+        }
+        .btn-primary:hover {
+            background-color: #b91c1c !important;
+        }
+        .btn-secondary {
+            background-color: #ffffff !important; /* Tombol Batal Putih */
+            border: 1px solid #d1d5db !important;
+            color: #374151 !important;
+        }
+        .modal-close {
+            color: #9ca3af !important;
+        }
+        .modal-close:hover {
+            color: #dc2626 !important;
+        }
+    </style>
+
     {{-- Kontainer Utama Tabel --}}
-    <div class="table-container" style="width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: 8px; background: #111a36;">
+    <div class="table-container" style="width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: 8px; background: #ffffff;">
         <div class="table-scroll" style="width: 100%; min-width: 1300px;">
             <table class="data-table" id="piutangTable" style="width: 100%; border-collapse: collapse;">
                 <thead>
@@ -43,14 +115,14 @@
                         <th rowspan="2">TGL. BUKTI</th>
                         <th rowspan="2" class="col-bukti">NO. BUKTI</th>
                         <th rowspan="2">SALDO AWAL</th>
-                        <th colspan="2" style="text-align:center; border-bottom:1px solid var(--border-color);">MUTASI</th>
+                        <th colspan="2" style="text-align:center;">MUTASI</th>
                         <th rowspan="2" class="col-rek-tgl">TGL. BUKTI</th>
                         <th rowspan="2" class="hl col-rek-no">NO. BUKTI</th>
                         <th rowspan="2">SALDO AKHIR</th>
                         <th rowspan="2" class="col-keterangan">KETERANGAN</th>
                         <th rowspan="2" class="col-no-polisi">NO POLISI</th>
                         <th rowspan="2" class="col-no-polis">NO POLIS</th>
-                        <th rowspan="2" class="col-spk">SPK</th>
+                        <th rowspan="2" class="col-spk">KATEGORI SPK</th>
                         <th rowspan="2" class="col-action">AKSI</th>
                     </tr>
                     <tr>
@@ -61,42 +133,32 @@
                 <tbody>
                     @forelse($records ?? [] as $row)
                         @php
-                            // Ambil data mentah (baik berbentuk Object ataupun Array)
                             $rawTglBukti = $row->tgl_bukti ?? ($row['tgl_bukti'] ?? null);
                             $rawTglRek = $row->tgl_bukti_rek ?? ($row['tgl_bukti_rek'] ?? null);
-
-                            // Konversi aman ke Carbon Instance untuk formatting tanggal "d F Y"
                             $tglBukti = $rawTglBukti ? (\Illuminate\Support\Carbon::parse($rawTglBukti)->format('d F Y')) : '-';
                             $tglRek = $rawTglRek ? (\Illuminate\Support\Carbon::parse($rawTglRek)->format('d F Y')) : '-';
-
-                            // Ambil nilai nominal saldo
                             $saldoAwal = $row->saldo_awal ?? ($row['saldo_awal'] ?? 0);
                             $debet = $row->debet ?? ($row['debet'] ?? 0);
                             $kredit = $row->kredit ?? ($row['kredit'] ?? 0);
                             $saldoAkhir = $row->saldo_akhir ?? ($row['saldo_akhir'] ?? 0);
                         @endphp
-                        <tr>
-                            <td>{{ $loop->iteration }}</td>
+                        <tr style="background-color: {{ $loop->even ? '#fef2f2' : '#ffffff' }};">
+                            <td style="text-align: center;">{{ $loop->iteration }}</td>
                             <td>{{ $row->nama_konsumen ?? ($row['nama_konsumen'] ?? '-') }}</td>
                             <td>{{ $tglBukti }}</td>
                             <td>{{ $row->no_bukti ?? ($row['no_bukti'] ?? '-') }}</td>
-
-                            {{-- Format Nominal Menggunakan Koma Semisal 1,500,000 --}}
                             <td class="text-bold">{{ is_numeric($saldoAwal) ? number_format($saldoAwal, 0, '.', ',') : '-' }}</td>
-                            <td class="text-green">{{ is_numeric($debet) ? number_format($debet, 0, '.', ',') : '-' }}</td>
-                            <td class="text-cyan">{{ is_numeric($kredit) ? number_format($kredit, 0, '.', ',') : '-' }}</td>
-
+                            <td style="color: #059669 !important; font-weight: 600;">{{ is_numeric($debet) ? number_format($debet, 0, '.', ',') : '-' }}</td>
+                            <td style="color: #0284c7 !important; font-weight: 600;">{{ is_numeric($kredit) ? number_format($kredit, 0, '.', ',') : '-' }}</td>
                             <td class="col-rek-tgl">{{ $tglRek }}</td>
                             <td class="col-rek-no">{{ $row->no_bukti_rek ?? ($row['no_bukti_rek'] ?? '-') }}</td>
-
                             <td class="text-bold">{{ is_numeric($saldoAkhir) ? number_format($saldoAkhir, 0, '.', ',') : '-' }}</td>
-
                             <td class="col-keterangan">{{ $row->keterangan ?? ($row['keterangan'] ?? '-') }}</td>
                             <td class="col-no-polisi">{{ $row->no_polisi ?? ($row['no_polisi'] ?? '-') }}</td>
                             <td class="col-no-polis">{{ $row->no_polis ?? ($row['no_polis'] ?? '-') }}</td>
                             <td class="col-spk">{{ strtoupper($row->spk_type ?? ($row['spk_type'] ?? '-')) }}</td>
                             <td class="col-action">
-                                <div style="display:flex; gap:6px;">
+                                <div style="display:flex; gap:6px; justify-content: center;">
                                     <a href="{{ url('/bp/' . ($row->id ?? ($row['id'] ?? '')) . '/edit') }}"
                                         class="action-btn edit" title="Edit" style="text-decoration: none;">✎</a>
                                     <form method="POST" action="{{ url('/bp/' . ($row->id ?? ($row['id'] ?? ''))) }}"
@@ -106,39 +168,39 @@
                             </td>
                         </tr>
                     @empty
-                        <tr>
-                            <td colspan="15" style="text-align:center; color:var(--text-muted); padding: 20px;">Tidak ada data untuk ditampilkan.</td>
+                        <tr class="no-data-row" style="background-color: #ffffff;">
+                            <td colspan="15" style="text-align:center; color: #6b7280 !important; padding: 20px;">Tidak ada data untuk ditampilkan.</td>
                         </tr>
                     @endforelse
                 </tbody>
 
-                {{-- Bagian Footer / Summary Total yang Sudah Disatukan --}}
-                <tfoot style="border-top: 2px solid var(--accent-blue);">
-                    <tr style="background-color: rgba(59, 130, 246, 0.15); font-weight: 600;">
-                        <td colspan="4" style="text-align: right; padding-right: 16px; font-weight: bold;">Total</td>
-                        <td>{{ number_format($totalSaldoAwal ?? 0, 0, '.', ',') }}</td>
-                        <td style="color: var(--accent-emerald);">{{ number_format($totalDebet ?? 0, 0, '.', ',') }}</td>
-                        <td style="color: var(--accent-cyan);">{{ number_format($totalKredit ?? 0, 0, '.', ',') }}</td>
+                {{-- Bagian Footer / Summary --}}
+                <tfoot>
+                    <tr style="background-color: #eff6ff; font-weight: 600;">
+                        <td colspan="4" style="text-align: right; padding-right: 16px; font-weight: bold; color: #111827;">Total</td>
+                        <td style="color: #111827;">{{ number_format($totalSaldoAwal ?? 0, 0, '.', ',') }}</td>
+                        <td style="color: #059669;">{{ number_format($totalDebet ?? 0, 0, '.', ',') }}</td>
+                        <td style="color: #0284c7;">{{ number_format($totalKredit ?? 0, 0, '.', ',') }}</td>
                         <td colspan="2"></td>
-                        <td>{{ number_format($totalSaldoAkhir ?? 0, 0, '.', ',') }}</td>
+                        <td style="color: #111827;">{{ number_format($totalSaldoAkhir ?? 0, 0, '.', ',') }}</td>
                         <td colspan="5"></td>
                     </tr>
-                    <tr style="background-color: rgba(59, 130, 246, 0.08); font-weight: 600;">
-                        <td colspan="4" style="text-align: right; padding-right: 16px; font-weight: bold;">GL</td>
-                        <td>{{ number_format($totalSaldoAwal ?? 0, 0, '.', ',') }}</td>
-                        <td style="color: var(--accent-emerald);">{{ number_format($totalDebet ?? 0, 0, '.', ',') }}</td>
-                        <td style="color: var(--accent-cyan);">{{ number_format($totalKredit ?? 0, 0, '.', ',') }}</td>
+                    <tr style="background-color: #f8fafc; font-weight: 600;">
+                        <td colspan="4" style="text-align: right; padding-right: 16px; font-weight: bold; color: #111827;">GL</td>
+                        <td style="color: #111827;">{{ number_format($totalSaldoAwal ?? 0, 0, '.', ',') }}</td>
+                        <td style="color: #059669;">{{ number_format($totalDebet ?? 0, 0, '.', ',') }}</td>
+                        <td style="color: #0284c7;">{{ number_format($totalKredit ?? 0, 0, '.', ',') }}</td>
                         <td colspan="2"></td>
-                        <td>{{ number_format($totalSaldoAkhir ?? 0, 0, '.', ',') }}</td>
+                        <td style="color: #111827;">{{ number_format($totalSaldoAkhir ?? 0, 0, '.', ',') }}</td>
                         <td colspan="5"></td>
                     </tr>
-                    <tr style="background-color: rgba(239, 68, 68, 0.08); font-weight: 600;">
-                        <td colspan="4" style="text-align: right; padding-right: 16px; font-weight: bold; color: #ff6b6b;">SELISIH</td>
-                        <td style="color: #ff6b6b;">-</td>
-                        <td style="color: #ff6b6b;">-</td>
-                        <td style="color: #ff6b6b;">-</td>
+                    <tr style="background-color: #fef2f2; font-weight: 600;">
+                        <td colspan="4" style="text-align: right; padding-right: 16px; font-weight: bold; color: #dc2626;">SELISIH</td>
+                        <td style="color: #dc2626;">-</td>
+                        <td style="color: #dc2626;">-</td>
+                        <td style="color: #dc2626;">-</td>
                         <td colspan="2"></td>
-                        <td style="color: #ff6b6b;">-</td>
+                        <td style="color: #dc2626;">-</td>
                         <td colspan="5"></td>
                     </tr>
                 </tfoot>
@@ -155,8 +217,7 @@
             </div>
             <div class="modal-body">
                 @if ($errors->any())
-                    <div class="alert alert-danger"
-                        style="margin-bottom: 16px; padding: 12px 16px; background: rgba(239,68,68,.1); border: 1px solid rgba(239,68,68,.3); border-radius: 8px; color: var(--accent-red); font-size: 14px;">
+                    <div class="alert alert-danger" style="margin-bottom: 16px; padding: 12px 16px; background: rgba(239,68,68,.1); border: 1px solid rgba(239,68,68,.3); border-radius: 8px; color: #dc2626; font-size: 14px;">
                         <ul style="list-style: none; margin: 0; padding: 0;">
                             @foreach ($errors->all() as $error)
                                 <li>{{ $error }}</li>
@@ -212,11 +273,12 @@
                             <input type="text" name="no_polis" class="form-input" placeholder="Nomor polis" value="{{ old('no_polis') }}">
                         </div>
                         <div class="form-group">
-                            <label class="form-label">SPK</label>
+                            <label class="form-label">KATEGORI SPK</label>
                             <select class="form-select" name="spk_type" style="width: 100%;">
                                 <option value="">Pilih Jenis SPK</option>
                                 <option value="ASURANSI">ASURANSI</option>
                                 <option value="REGULER">REGULER</option>
+                                <option value="INTERNAL">INTERNAL</option>
                             </select>
                         </div>
                         <div class="form-group full-width" style="grid-column: 1 / -1;">
@@ -233,4 +295,40 @@
         </div>
     </div>
 </div>
+
+{{-- Script Fitur Search Real-time & Shortcut Ctrl+K --}}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const searchInput = document.getElementById('searchInput');
+
+        // Listener Input Pencarian
+        searchInput.addEventListener('input', function () {
+            const filterValue = this.value.toLowerCase().trim();
+            const tableRows = document.querySelectorAll('#piutangTable tbody tr');
+
+            tableRows.forEach(row => {
+                // Jangan sembunyikan baris kalau bawaan data memang kosong
+                if (row.classList.contains('no-data-row')) return;
+
+                // Mengambil seluruh teks di baris tabel saat ini
+                const rowText = row.textContent.toLowerCase();
+
+                // Tampilkan/Sembunyikan baris berdasarkan kecocokan keyword pencarian
+                if (rowText.includes(filterValue)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+
+        // Fitur Shortcut: Tekan Ctrl + K untuk otomatis fokus ke Input Pencarian
+        window.addEventListener('keydown', function (e) {
+            if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+                e.preventDefault(); // Mencegah default browser search bar
+                searchInput.focus();
+            }
+        });
+    });
+</script>
 @endsection

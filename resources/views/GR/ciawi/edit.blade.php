@@ -24,7 +24,7 @@
             <div class="form-group">
                 <label class="form-label">Tgl. Bukti</label>
                 <input type="date" name="tgl_bukti" class="form-input"
-                    value="{{ old('tgl_bukti', isset($record->tgl_bukti) ? $record->tgl_bukti->format('Y-m-d') : $record['tgl_bukti'] ?? '') }}">
+                    value="{{ old('tgl_bukti', isset($record->tgl_bukti) ? (\Illuminate\Support\Carbon::parse($record->tgl_bukti)->format('Y-m-d')) : ($record['tgl_bukti'] ?? '')) }}">
             </div>
             <div class="form-group">
                 <label class="form-label">No. Bukti</label>
@@ -46,6 +46,25 @@
                 <input type="text" name="kredit" class="form-input"
                     value="{{ old('kredit', $record->kredit ?? ($record['kredit'] ?? '')) }}">
             </div>
+
+            {{-- Tambahan Field yang Sebelumnya Kurang --}}
+            <div class="form-group">
+                <label class="form-label">Tgl. Bukti (Rekonsiliasi)</label>
+                <input type="date" name="tgl_bukti_rek" class="form-input"
+                    value="{{ old('tgl_bukti_rek', isset($record->tgl_bukti_rek) ? (\Illuminate\Support\Carbon::parse($record->tgl_bukti_rek)->format('Y-m-d')) : ($record['tgl_bukti_rek'] ?? '')) }}">
+            </div>
+            <div class="form-group">
+                <label class="form-label">No. Bukti (Rekonsiliasi)</label>
+                <input type="text" name="no_bukti_rek" class="form-input"
+                    value="{{ old('no_bukti_rek', $record->no_bukti_rek ?? ($record['no_bukti_rek'] ?? '')) }}">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Keterangan</label>
+                <input type="text" name="keterangan" class="form-input"
+                    value="{{ old('keterangan', $record->keterangan ?? ($record['keterangan'] ?? '')) }}">
+            </div>
+            {{-- End Tambahan Field --}}
+
             <div class="form-group">
                 <label class="form-label">No Polisi</label>
                 <input type="text" name="no_polisi" class="form-input"
@@ -57,7 +76,7 @@
                     value="{{ old('no_polis', $record->no_polis ?? ($record['no_polis'] ?? '')) }}">
             </div>
             <div class="form-group">
-                <label class="form-label">SPK</label>
+                <label class="form-label">KATEGORI SPK</label>
                 <select class="form-select" name="spk_type">
                     <option value="">Pilih Jenis SPK</option>
                     <option value="ASURANSI"
@@ -66,6 +85,9 @@
                     <option value="REGULER"
                         {{ old('spk_type', $record->spk_type ?? ($record['spk_type'] ?? '')) == 'REGULER' ? 'selected' : '' }}>
                         REGULER</option>
+                    <option value="INTERNAL"
+                        {{ old('spk_type', $record->spk_type ?? ($record['spk_type'] ?? '')) == 'INTERNAL' ? 'selected' : '' }}>
+                        INTERNAL</option>
                 </select>
             </div>
             <div class="form-group full-width">
@@ -80,6 +102,4 @@
         </div>
     </form>
 </div>
-
 @endsection
-

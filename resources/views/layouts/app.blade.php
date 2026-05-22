@@ -11,15 +11,33 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
+    {{-- CUSTOM LIGHT THEME WITH RED ACCENTS --}}
     <style>
+        :root {
+            --bg-main: #f4f5f7;        /* Putih keabu-abuan/tidak silau */
+            --bg-card: #ffffff;        /* Putih bersih untuk card/tabel */
+            --text-main: #1e293b;      /* Teks utama gelap */
+            --text-muted: #64748b;     /* Teks sekunder kelabu */
+            --accent-red: #dc2626;     /* Merah Suzuki */
+            --accent-red-light: #fee2e2; /* Merah transparan untuk hover/highlight */
+            --border-color: #e2e8f0;   /* Garis pembatas tipis */
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+        }
+
         .app-wrapper {
             display: flex;
             width: 100%;
             min-height: 100vh;
             position: relative;
-            background-color: #0b1329;
         }
 
+        /* Sidebar Putih Bergaris Merah Kanan */
         .sidebar {
             width: 200px;
             position: fixed;
@@ -28,23 +46,74 @@
             height: 100vh;
             z-index: 100;
             box-sizing: border-box;
+            background-color: var(--bg-card);
+            border-right: 2px solid var(--accent-red);
         }
 
         .sidebar-brand {
             padding: 16px 12px;
             gap: 8px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
         }
         .brand-name {
             font-size: 13px !important;
+            color: var(--text-main) !important;
         }
         .brand-subtitle {
             font-size: 10px !important;
-        }
-        .sidebar-nav .nav-link {
-            padding: 10px 12px;
-            font-size: 13px;
+            color: var(--text-muted) !important;
         }
 
+        .sidebar-nav {
+            padding: 12px 8px;
+        }
+        .sidebar-nav .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            font-size: 13px;
+            color: var(--text-main);
+            text-decoration: none;
+            border-radius: 6px;
+            margin-bottom: 4px;
+            transition: all 0.2s;
+        }
+        .sidebar-nav .nav-link:hover {
+            background-color: var(--bg-main);
+            color: var(--accent-red);
+        }
+        .sidebar-nav .nav-link.active {
+            background-color: var(--accent-red);
+            color: #ffffff !important;
+        }
+        .sidebar-nav .nav-link.active svg {
+            stroke: #ffffff !important;
+        }
+
+        /* Nav Submenu */
+        .nav-submenu {
+            padding-left: 16px;
+        }
+        .nav-sublink {
+            display: flex;
+            align-items: center;
+            padding: 8px 12px;
+            font-size: 12px;
+            color: var(--text-muted);
+            text-decoration: none;
+        }
+        .nav-sublink:hover {
+            color: var(--accent-red);
+        }
+        .nav-sublink.active {
+            color: var(--accent-red);
+            font-weight: 600;
+        }
+
+        /* Area Konten Utama */
         .main-content {
             flex: 1;
             margin-left: 200px;
@@ -53,6 +122,48 @@
             box-sizing: border-box;
             padding: 24px;
             position: relative;
+        }
+
+        .page-title {
+            color: var(--text-main);
+            font-weight: 700;
+        }
+        .page-subtitle {
+            color: var(--text-muted);
+        }
+
+        /* Tombol Utama Bertema Merah */
+        .btn-primary {
+            background-color: var(--accent-red);
+            color: #ffffff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn-primary:hover {
+            background-color: #b91c1c;
+        }
+
+        /* Input Pencarian */
+        .search-wrapper {
+            position: relative;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            padding: 0 12px;
+        }
+        .search-input {
+            background: transparent;
+            border: none;
+            color: var(--text-main);
+            padding: 8px 0;
+            outline: none;
+            width: 250px;
         }
 
         @media (max-width: 991px) {
@@ -74,8 +185,8 @@
                         style="width: 100%; height: 100%; object-fit: cover; border-radius: 4px;">
                 </div>
                 <div style="min-width: 0;">
-                    <span class="brand-name" style="display: block; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">AR SERVICE</span>
-                    <span class="brand-subtitle" style="display: block; color: #8a99ad; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Piutang Konsumen</span>
+                    <span class="brand-name" style="display: block; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">AR SERVICE</span>
+                    <span class="brand-subtitle" style="display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Piutang Konsumen</span>
                 </div>
             </div>
 
@@ -99,89 +210,38 @@
                 </a>
 
                 <div class="nav-group {{ request()->is('gr/*') ? 'open' : '' }}" id="grMenu">
-                    <button class="nav-link nav-toggle" onclick="toggleSubmenu('grMenu')" style="width: 100.2%; text-align: left;">
+                    <button class="nav-link nav-toggle" onclick="toggleSubmenu('grMenu')" style="width: 100.2%; text-align: left; background: none; border: none; cursor: pointer;">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px; height:18px;">
                             <circle cx="12" cy="12" r="10"></circle>
                         </svg>
                         <span>GR</span>
-                        <svg class="nav-arrow" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: auto;">
-                            <polyline points="18 15 12 9 6 15"></polyline>
-                        </svg>
                     </button>
                     <div class="nav-submenu">
-                        <a href="{{ url('/gr/cinere') }}" class="nav-sublink {{ request()->is('gr/cinere*') ? 'active' : '' }}"><span class="bullet"></span>CINERE</a>
-                        <a href="{{ url('/gr/jatiasih') }}" class="nav-sublink {{ request()->is('gr/jatiasih*') ? 'active' : '' }}"><span class="bullet"></span>JATIASIH</a>
-                        <a href="{{ url('/gr/cianjur') }}" class="nav-sublink {{ request()->is('gr/cianjur*') ? 'active' : '' }}"><span class="bullet"></span>CIANJUR</a>
-                        <a href="{{ url('/gr/ciawi') }}" class="nav-sublink {{ request()->is('gr/ciawi*') ? 'active' : '' }}"><span class="bullet"></span>CIAWI</a>
+                        <a href="{{ url('/gr/cinere') }}" class="nav-sublink {{ request()->is('gr/cinere*') ? 'active' : '' }}">CINERE</a>
+                        <a href="{{ url('/gr/jatiasih') }}" class="nav-sublink {{ request()->is('gr/jatiasih*') ? 'active' : '' }}">JATIASIH</a>
+                        <a href="{{ url('/gr/cianjur') }}" class="nav-sublink {{ request()->is('gr/cianjur*') ? 'active' : '' }}">CIANJUR</a>
+                        <a href="{{ url('/gr/ciawi') }}" class="nav-sublink {{ request()->is('gr/ciawi*') ? 'active' : '' }}">CIAWI</a>
                     </div>
                 </div>
             </nav>
         </aside>
 
         <main class="main-content">
-            <button class="sidebar-toggle" id="sidebarToggle" type="button" onclick="toggleSidebar()" aria-label="Toggle sidebar">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="3" y1="12" x2="21" y2="12"></line>
-                    <line x1="3" y1="6" x2="21" y2="6"></line>
-                    <line x1="3" y1="18" x2="21" y2="18"></line>
-                </svg>
-            </button>
             @yield('content')
         </main>
     </div>
-    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
-
-    <button class="settings-btn" id="settingsBtn" title="Pengaturan">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="3"></circle>
-            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-        </svg>
-    </button>
 
     <script>
         function toggleSubmenu(id) {
             const group = document.getElementById(id);
             group.classList.toggle('open');
         }
-
         function openModal() {
-            const modal = document.getElementById('createModal');
-            if (modal) modal.style.display = 'flex';
+            document.getElementById('createModal').style.display = 'flex';
         }
-
         function closeModal() {
-            const modal = document.getElementById('createModal');
-            if (modal) {
-                modal.style.display = 'none';
-                const form = document.getElementById('createForm');
-                if (form) form.reset();
-            }
+            document.getElementById('createModal').style.display = 'none';
         }
-
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('sidebarOverlay');
-            const open = sidebar.classList.toggle('open');
-            overlay.classList.toggle('open', open);
-        }
-
-        function closeSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('sidebarOverlay');
-            sidebar.classList.remove('open');
-            overlay.classList.remove('open');
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            const modal = document.getElementById('createModal');
-            if (modal) {
-                @if ($errors->any()) openModal(); @endif
-                modal.addEventListener('click', function(event) {
-                    if (event.target === modal) closeModal();
-                });
-            }
-        });
     </script>
-    @yield('scripts')
 </body>
 </html>
