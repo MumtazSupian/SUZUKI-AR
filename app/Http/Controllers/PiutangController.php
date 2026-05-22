@@ -11,7 +11,21 @@ class PiutangController extends Controller
 
     public function indexBp()
     {
-        return view('BP.index', ['records' => Piutang::where('branch', 'bp')->orderByDesc('id')->get()]);
+        $records = Piutang::where('branch', 'bp')->orderByDesc('id')->get();
+
+        // Calculate totals
+        $totalSaldoAwal = $records->sum('saldo_awal');
+        $totalDebet = $records->sum('debet');
+        $totalKredit = $records->sum('kredit');
+        $totalSaldoAkhir = $records->sum('saldo_akhir');
+
+        return view('BP.index', [
+            'records' => $records,
+            'totalSaldoAwal' => $totalSaldoAwal,
+            'totalDebet' => $totalDebet,
+            'totalKredit' => $totalKredit,
+            'totalSaldoAkhir' => $totalSaldoAkhir,
+        ]);
     }
 
     public function storeBp(Request $request)

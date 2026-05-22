@@ -106,6 +106,16 @@
                 <button class="modal-close" onclick="closeModal()">&times;</button>
             </div>
             <div class="modal-body">
+                @if ($errors->any())
+                    <div class="alert alert-danger"
+                        style="margin-bottom: 16px; padding: 12px 16px; background: rgba(239,68,68,.1); border: 1px solid rgba(239,68,68,.3); border-radius: 8px; color: var(--accent-red); font-size: 14px;">
+                        <ul style="list-style: none;">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
                 <form id="createForm" method="POST" action="{{ url('/gr/cinere') }}">
                     @csrf
                     <div class="form-grid">

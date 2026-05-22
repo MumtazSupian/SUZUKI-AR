@@ -98,6 +98,49 @@
         </div>
     </div>
 
+    {{-- Summary Section --}}
+    <div style="margin-top: 24px;">
+        <div class="table-container">
+            <div class="table-scroll">
+                <table class="data-table" style="border-top: 2px solid var(--accent-blue);">
+                    <tbody>
+                        <tr style="background-color: rgba(59, 130, 246, 0.1); font-weight: 600;">
+                            <td colspan="4" style="text-align: right; padding-right: 16px;">Total</td>
+                            <td style="text-align: right;">{{ number_format($totalSaldoAwal ?? 0, 2, ',', '.') }}</td>
+                            <td style="text-align: right; color: var(--accent-emerald);">
+                                {{ number_format($totalDebet ?? 0, 2, ',', '.') }}</td>
+                            <td style="text-align: right; color: var(--accent-cyan);">
+                                {{ number_format($totalKredit ?? 0, 2, ',', '.') }}</td>
+                            <td colspan="2"></td>
+                            <td style="text-align: right;">{{ number_format($totalSaldoAkhir ?? 0, 2, ',', '.') }}</td>
+                            <td colspan="5"></td>
+                        </tr>
+                        <tr style="background-color: rgba(59, 130, 246, 0.05); font-weight: 600;">
+                            <td colspan="4" style="text-align: right; padding-right: 16px;">GL</td>
+                            <td style="text-align: right;">{{ number_format($totalSaldoAwal ?? 0, 2, ',', '.') }}</td>
+                            <td style="text-align: right; color: var(--accent-emerald);">
+                                {{ number_format($totalDebet ?? 0, 2, ',', '.') }}</td>
+                            <td style="text-align: right; color: var(--accent-cyan);">
+                                {{ number_format($totalKredit ?? 0, 2, ',', '.') }}</td>
+                            <td colspan="2"></td>
+                            <td style="text-align: right;">{{ number_format($totalSaldoAkhir ?? 0, 2, ',', '.') }}</td>
+                            <td colspan="5"></td>
+                        </tr>
+                        <tr style="background-color: rgba(239, 68, 68, 0.05); font-weight: 600;">
+                            <td colspan="4" style="text-align: right; padding-right: 16px;">SELISIH</td>
+                            <td style="text-align: right;">-</td>
+                            <td style="text-align: right;">-</td>
+                            <td style="text-align: right;">-</td>
+                            <td colspan="2"></td>
+                            <td style="text-align: right;">-</td>
+                            <td colspan="5"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
     {{-- Modal Create (form SPK changed to generic 'SPK') --}}
     <div class="modal-overlay" id="createModal">
         <div class="modal">
@@ -106,6 +149,16 @@
                 <button class="modal-close" onclick="closeModal()">&times;</button>
             </div>
             <div class="modal-body">
+                @if ($errors->any())
+                    <div class="alert alert-danger"
+                        style="margin-bottom: 16px; padding: 12px 16px; background: rgba(239,68,68,.1); border: 1px solid rgba(239,68,68,.3); border-radius: 8px; color: var(--accent-red); font-size: 14px;">
+                        <ul style="list-style: none;">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
                 <form id="createForm" method="POST" action="{{ url('/bp') }}">
                     @csrf
                     <div class="form-grid">
