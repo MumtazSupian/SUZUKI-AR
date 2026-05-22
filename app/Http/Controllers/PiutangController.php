@@ -102,7 +102,10 @@ class PiutangController extends Controller
     {
         $data = $this->validateData($request);
         $data['branch'] = $branch;
-        $data['saldo_akhir'] = $this->calculateSaldoAkhir($data);
+
+        if (! isset($data['saldo_akhir']) || $data['saldo_akhir'] === null || $data['saldo_akhir'] === '') {
+            $data['saldo_akhir'] = $this->calculateSaldoAkhir($data);
+        }
 
         Piutang::create($data);
 
@@ -113,7 +116,10 @@ class PiutangController extends Controller
     {
         $record = Piutang::where('branch', $branch)->findOrFail($id);
         $data = $this->validateData($request);
-        $data['saldo_akhir'] = $this->calculateSaldoAkhir($data);
+
+        if (! isset($data['saldo_akhir']) || $data['saldo_akhir'] === null || $data['saldo_akhir'] === '') {
+            $data['saldo_akhir'] = $this->calculateSaldoAkhir($data);
+        }
 
         $record->update($data);
 
@@ -136,6 +142,7 @@ class PiutangController extends Controller
             'no_polis' => ['nullable', 'string', 'max:100'],
             'spk_type' => ['nullable', 'string', 'in:ASURANSI,REGULER'],
             'no_spk' => ['nullable', 'string', 'max:100'],
+            'saldo_akhir' => ['nullable', 'numeric'],
         ]);
     }
 

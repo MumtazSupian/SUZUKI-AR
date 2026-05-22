@@ -3,6 +3,7 @@
 @section('title', 'GR Jatiasih - Edit Piutang')
 
 @section('content')
+<div style="padding: 24px; max-width: 100%; box-sizing: border-box;">
     <div class="page-header">
         <div>
             <h1 class="page-title">Edit Data Piutang - GR Jatiasih</h1>
@@ -13,7 +14,8 @@
     <form method="POST" action="{{ url('/gr/jatiasih/' . ($id ?? ($record->id ?? ''))) }}">
         @csrf
         @method('PUT')
-        <div class="form-grid">
+        {{-- Menggunakan grid yang adaptif agar input tidak saling bertumpuk --}}
+        <div class="form-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; width: 100%;">
             <div class="form-group">
                 <label class="form-label">Nama Konsumen</label>
                 <input type="text" name="nama_konsumen" class="form-input"
@@ -30,8 +32,8 @@
                     value="{{ old('no_bukti', $record->no_bukti ?? ($record['no_bukti'] ?? '')) }}">
             </div>
             <div class="form-group">
-                <label class="form-label">Saldo Awal</label>
-                <input type="text" name="saldo_awal" class="form-input"
+                <label class="form-label">Saldo Pembukuan (Saldo Awal)</label>
+                <input type="text" name="saldo_awal" class="form-input" style="width: 100%;"
                     value="{{ old('saldo_awal', $record->saldo_awal ?? ($record['saldo_awal'] ?? '')) }}">
             </div>
             <div class="form-group">
@@ -67,13 +69,15 @@
                 </select>
             </div>
             <div class="form-group full-width">
-                <label class="form-label">Nomor SPK</label>
-                <input type="text" name="no_spk" class="form-input"
-                    value="{{ old('no_spk', $record->no_spk ?? ($record['no_spk'] ?? '')) }}">
+                <label class="form-label">Saldo Akhir</label>
+                <input type="text" name="saldo_akhir" class="form-input"
+                    value="{{ old('saldo_akhir', $record->saldo_akhir ?? ($record['saldo_akhir'] ?? '')) }}">
             </div>
         </div>
-        <div style="margin-top:16px;">
+        <div style="margin-top: 24px; display: flex; gap: 8px;">
             <button class="btn-secondary" onclick="history.back();return false;">Batal</button>
             <button class="btn-primary" type="submit">Simpan</button>
         </div>
     </form>
+</div>
+

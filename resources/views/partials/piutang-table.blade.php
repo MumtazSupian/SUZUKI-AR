@@ -246,8 +246,8 @@
                         </select>
                     </div>
                     <div class="form-group full-width">
-                        <label class="form-label">Nomor SPK</label>
-                        <input type="text" class="form-input" placeholder="Nomor SPK" id="inputNomorSpk">
+                        <label class="form-label">Saldo Akhir</label>
+                        <input type="text" class="form-input" placeholder="Saldo Akhir" id="inputNomorSpk">
                     </div>
                 </div>
             </form>
