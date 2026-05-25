@@ -101,6 +101,7 @@ class PiutangController extends Controller
     private function store(Request $request, string $branch)
     {
         $data = $this->validateData($request);
+        $data = $this->normalizeNumericData($data);
         $data['branch'] = $branch;
 
         if (! isset($data['saldo_akhir']) || $data['saldo_akhir'] === null || $data['saldo_akhir'] === '') {
@@ -116,6 +117,7 @@ class PiutangController extends Controller
     {
         $record = Piutang::where('branch', $branch)->findOrFail($id);
         $data = $this->validateData($request);
+        $data = $this->normalizeNumericData($data);
 
         if (! isset($data['saldo_akhir']) || $data['saldo_akhir'] === null || $data['saldo_akhir'] === '') {
             $data['saldo_akhir'] = $this->calculateSaldoAkhir($data);
@@ -144,6 +146,19 @@ class PiutangController extends Controller
             'no_spk' => ['nullable', 'string', 'max:100'],
             'saldo_akhir' => ['nullable', 'numeric'],
         ]);
+    }
+
+    private function normalizeNumericData(array $data): array
+    {
+        $numericKeys = ['saldo_awal', 'debet', 'kredit'];
+
+        foreach ($numericKeys as $key) {
+            if (! isset($data[$key]) || $data[$key] === null || $data[$key] === '') {
+                $data[$key] = 0;
+            }
+        }
+
+        return $data;
     }
 
     private function calculateSaldoAkhir(array $data): float

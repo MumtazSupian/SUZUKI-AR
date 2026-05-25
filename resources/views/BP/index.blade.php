@@ -180,22 +180,33 @@
                                 $kredit = $row->kredit ?? ($row['kredit'] ?? 0);
                                 $saldoAkhir = $row->saldo_akhir ?? ($row['saldo_akhir'] ?? 0);
 
-                                $rowStyle = 'background-color: ' . ($loop->even ? '#fef2f2' : '#ffffff') . ';'; // Default warna selang-seling
+                                // 1. Set default style (jika tidak ada tanggal bukti)
+                                $rowStyle = 'background-color: ' . ($loop->even ? '#fef2f2' : '#ffffff') . ';';
 
                                 if ($rawTglBukti) {
-                                    $selisihHari = \Illuminate\Support\Carbon::parse($rawTglBukti)
-                                        ->startOfDay()
-                                        ->diffInDays(now()->setTimezone('Asia/Jakarta')->startOfDay());
+                                    // Samakan timezone ke Asia/Jakarta agar perhitungannya sinkron dengan server
+                                    $hariIni = \Illuminate\Support\Carbon::now('Asia/Jakarta')->startOfDay();
+                                    $tanggalInput = \Illuminate\Support\Carbon::parse(
+                                        $rawTglBukti,
+                                        'Asia/Jakarta',
+                                    )->startOfDay();
 
-                                    if ($selisihHari < 14) {
-                                        // Kurang dari 14 hari: HIJAU SATU BARIS
-                                        $rowStyle = 'background-color: #4ade80 !important; font-weight: 600;';
-                                    } elseif ($selisihHari >= 14 && $selisihHari <= 30) {
-                                        // 14 sampai 30 hari: KUNING SATU BARIS
-                                        $rowStyle = 'background-color: #fde047 !important; font-weight: 600;';
+                                    // Hitung selisih hari
+                                    $selisihHari = $tanggalInput->diffInDays($hariIni);
+
+                                    // 2. LOGIC PEWARNAAN BERDASARKAN WAKTU
+                                    if ($selisihHari > 30) {
+                                        // Lebih dari 30 hari (Sebulan yang lalu) -> MERAH
+                                        $rowStyle =
+                                            'background-color: #f87171 !important; color: #111827 !important; font-weight: 600;';
+                                    } elseif ($selisihHari >= 14) {
+                                        // Sudah lewat 14 hari sampai 30 hari (2 minggu - sebulan) -> KUNING
+                                        $rowStyle =
+                                            'background-color: #fde047 !important; color: #111827 !important; font-weight: 600;';
                                     } else {
-                                        // Lebih dari 30 hari: MERAH SATU BARIS
-                                        $rowStyle = 'background-color: #f87171 !important; font-weight: 600;';
+                                        // Kurang dari 14 hari (Inputan baru / di bawah 2 minggu) -> HIJAU
+                                        $rowStyle =
+                                            'background-color: #4ade80 !important; color: #111827 !important; font-weight: 600;';
                                     }
                                 }
                             @endphp
