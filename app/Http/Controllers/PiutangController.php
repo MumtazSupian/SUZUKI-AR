@@ -140,7 +140,7 @@ class PiutangController extends Controller
             'keterangan' => ['nullable', 'string', 'max:255'],
             'no_polisi' => ['nullable', 'string', 'max:100'],
             'no_polis' => ['nullable', 'string', 'max:100'],
-            'spk_type' => ['nullable', 'string', 'in:ASURANSI,REGULER'],
+            'spk_type' => ['nullable', 'string', 'in:ASURANSI,REGULER,INTERNAL'],
             'no_spk' => ['nullable', 'string', 'max:100'],
             'saldo_akhir' => ['nullable', 'numeric'],
         ]);

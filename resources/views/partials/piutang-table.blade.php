@@ -1,5 +1,4 @@
-{{-- Page Header --}}
-<div class="page-header">
+{{-- <div class="page-header">
     <div>
         <h1 class="page-title">{{ $pageTitle ?? 'Rekapitulasi Piutang' }}</h1>
         <p class="page-subtitle">{{ $pageSubtitle ?? 'Kelola data saldo awal, mutasi, rekonsiliasi GL, dan saldo akhir konsumen secara instan.' }}</p>
@@ -10,7 +9,6 @@
     </div>
 </div>
 
-{{-- Toolbar --}}
 <div class="toolbar">
     <div class="search-wrapper">
         <input type="text" class="search-input" placeholder="Cari konsumen, no. bukti, plat/no. polisi, polis..." id="searchInput">
@@ -27,7 +25,6 @@
     </div>
 </div>
 
-{{-- Data Table --}}
 <div class="table-container">
     <div class="table-scroll">
         <table class="data-table" id="piutangTable">
@@ -54,7 +51,6 @@
                 </tr>
             </thead>
             <tbody>
-                {{-- Sample Data Rows --}}
                 <tr>
                     <td>1</td>
                     <td>testing</td>
@@ -144,7 +140,6 @@
                     </td>
                 </tr>
 
-                {{-- TOTAL --}}
                 <tr class="row-total">
                     <td colspan="4"><strong>TOTAL</strong></td>
                     <td class="text-bold">4.800.000</td>
@@ -155,7 +150,6 @@
                     <td colspan="5"></td>
                 </tr>
 
-                {{-- GL --}}
                 <tr class="row-gl">
                     <td colspan="4"><strong>GL</strong></td>
                     <td class="text-bold">4.800.000</td>
@@ -167,7 +161,6 @@
                     <td colspan="5"></td>
                 </tr>
 
-                {{-- SELISIH --}}
                 <tr class="row-selisih">
                     <td colspan="4"><strong>SELISIH</strong></td>
                     <td>–</td>
@@ -183,7 +176,6 @@
     </div>
 </div>
 
-{{-- ===== Modal Tambah Data ===== --}}
 <div class="modal-overlay" id="createModal">
     <div class="modal">
         <div class="modal-header">
@@ -260,7 +252,6 @@
 </div>
 
 <script>
-    // Modal
     function openModal() {
         document.getElementById('createModal').classList.add('show');
     }
@@ -268,17 +259,14 @@
         document.getElementById('createModal').classList.remove('show');
     }
     function submitForm() {
-        // TODO: handle form submission
         alert('Data berhasil disimpan!');
         closeModal();
     }
 
-    // Close modal on overlay click
     document.getElementById('createModal').addEventListener('click', function(e) {
         if (e.target === this) closeModal();
     });
 
-    // Ctrl+K search shortcut
     document.addEventListener('keydown', function(e) {
         if (e.ctrlKey && e.key === 'k') {
             e.preventDefault();
@@ -288,4 +276,4 @@
             closeModal();
         }
     });
-</script>
+</script> --}}
