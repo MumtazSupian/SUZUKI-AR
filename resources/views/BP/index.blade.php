@@ -267,25 +267,36 @@
                             <td style="color: #111827;">{{ number_format($totalSaldoAkhir ?? 0, 0, '.', ',') }}</td>
                             <td colspan="5"></td>
                         </tr>
+                        @php
+                            $glSaldoAwal = $totalSaldoAwal ?? 0;
+                            $glDebet = $totalDebet ?? 0;
+                            $glKredit = $totalKredit ?? 0;
+                            $glSaldoAkhir = $totalSaldoAkhir ?? 0;
+                            
+                            $selisihAwal = ($totalSaldoAwal ?? 0) - $glSaldoAwal;
+                            $selisihDebet = ($totalDebet ?? 0) - $glDebet;
+                            $selisihKredit = ($totalKredit ?? 0) - $glKredit;
+                            $selisihAkhir = ($totalSaldoAkhir ?? 0) - $glSaldoAkhir;
+                        @endphp
                         <tr style="background-color: #f8fafc; font-weight: 600;">
                             <td colspan="4"
                                 style="text-align: right; padding-right: 16px; font-weight: bold; color: #111827;">GL</td>
-                            <td style="color: #111827;">{{ number_format($totalSaldoAwal ?? 0, 0, '.', ',') }}</td>
-                            <td style="color: #111827;">{{ number_format($totalDebet ?? 0, 0, '.', ',') }}</td>
-                            <td style="color: #111827;">{{ number_format($totalKredit ?? 0, 0, '.', ',') }}</td>
+                            <td style="color: #111827;">{{ number_format($glSaldoAwal, 0, '.', ',') }}</td>
+                            <td style="color: #111827;">{{ number_format($glDebet, 0, '.', ',') }}</td>
+                            <td style="color: #111827;">{{ number_format($glKredit, 0, '.', ',') }}</td>
                             <td colspan="2"></td>
-                            <td style="color: #111827;">{{ number_format($totalSaldoAkhir ?? 0, 0, '.', ',') }}</td>
+                            <td style="color: #111827;">{{ number_format($glSaldoAkhir, 0, '.', ',') }}</td>
                             <td colspan="5"></td>
                         </tr>
                         <tr style="background-color: #fef2f2; font-weight: 600;">
                             <td colspan="4"
                                 style="text-align: right; padding-right: 16px; font-weight: bold; color: #dc2626;">SELISIH
                             </td>
-                            <td style="color: #dc2626;">-</td>
-                            <td style="color: #dc2626;">-</td>
-                            <td style="color: #dc2626;">-</td>
+                            <td style="color: #dc2626;">{{ $selisihAwal == 0 ? '-' : number_format($selisihAwal, 0, '.', ',') }}</td>
+                            <td style="color: #dc2626;">{{ $selisihDebet == 0 ? '-' : number_format($selisihDebet, 0, '.', ',') }}</td>
+                            <td style="color: #dc2626;">{{ $selisihKredit == 0 ? '-' : number_format($selisihKredit, 0, '.', ',') }}</td>
                             <td colspan="2"></td>
-                            <td style="color: #dc2626;">{{ number_format($totalSelisih ?? 0, 0, '.', ',') }}</td>
+                            <td style="color: #dc2626;">{{ $selisihAkhir == 0 ? '-' : number_format($selisihAkhir, 0, '.', ',') }}</td>
                             <td colspan="5"></td>
                         </tr>
                     </tfoot>
