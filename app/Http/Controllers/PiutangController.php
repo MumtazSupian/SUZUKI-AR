@@ -11,6 +11,10 @@ class PiutangController extends Controller
 
     public function indexBp()
     {
+        /** @var \App\Models\User $user */
+        $user = auth()->user();
+        abort_if($user->branch !== 'bp', 403, 'Unauthorized action.');
+
         $records = Piutang::where('branch', 'bp')->orderByDesc('id')->get();
 
         // Calculate totals
@@ -30,11 +34,18 @@ class PiutangController extends Controller
 
     public function storeBp(Request $request)
     {
+        /** @var \App\Models\User $user */
+        $user = auth()->user();
+        abort_if($user->branch !== 'bp', 403, 'Unauthorized action.');
         return $this->store($request, 'bp');
     }
 
     public function editBp($id)
     {
+        /** @var \App\Models\User $user */
+        $user = auth()->user();
+        abort_if($user->branch !== 'bp', 403, 'Unauthorized action.');
+
         $record = Piutang::where('branch', 'bp')->findOrFail($id);
 
         return view('BP.edit', compact('record', 'id'));
@@ -42,11 +53,17 @@ class PiutangController extends Controller
 
     public function updateBp(Request $request, $id)
     {
+        /** @var \App\Models\User $user */
+        $user = auth()->user();
+        abort_if($user->branch !== 'bp', 403, 'Unauthorized action.');
         return $this->update($request, 'bp', $id);
     }
 
     public function destroyBp($id)
     {
+        /** @var \App\Models\User $user */
+        $user = auth()->user();
+        abort_if($user->branch !== 'bp', 403, 'Unauthorized action.');
         Piutang::where('branch', 'bp')->findOrFail($id)->delete();
 
         return redirect('/bp');
@@ -96,6 +113,10 @@ class PiutangController extends Controller
         if (! in_array($branch, self::GR_BRANCHES, true)) {
             abort(404);
         }
+
+        /** @var \App\Models\User $user */
+        $user = auth()->user();
+        abort_if($user->branch !== $branch, 403, 'Unauthorized action.');
     }
 
     private function store(Request $request, string $branch)

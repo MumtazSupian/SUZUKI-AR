@@ -201,6 +201,7 @@
                     <span>Dashboard</span>
                 </a>
 
+                @if(auth()->check() && auth()->user()->branch === 'bp')
                 <a href="{{ url('/bp') }}" class="nav-link {{ request()->is('bp*') ? 'active' : '' }}" id="nav-bp">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px; height:18px;">
                         <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
@@ -208,7 +209,9 @@
                     </svg>
                     <span>BP</span>
                 </a>
+                @endif
 
+                @if(auth()->check() && in_array(auth()->user()->branch, ['cinere', 'jatiasih', 'cianjur', 'ciawi']))
                 <div class="nav-group {{ request()->is('gr/*') ? 'open' : '' }}" id="grMenu">
                     <button class="nav-link nav-toggle" onclick="toggleSubmenu('grMenu')" style="width: 100.2%; text-align: left; background: none; border: none; cursor: pointer;">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px; height:18px;">
@@ -217,12 +220,37 @@
                         <span>GR</span>
                     </button>
                     <div class="nav-submenu">
+                        @if(auth()->user()->branch === 'cinere')
                         <a href="{{ url('/gr/cinere') }}" class="nav-sublink {{ request()->is('gr/cinere*') ? 'active' : '' }}">CINERE</a>
+                        @endif
+                        @if(auth()->user()->branch === 'jatiasih')
                         <a href="{{ url('/gr/jatiasih') }}" class="nav-sublink {{ request()->is('gr/jatiasih*') ? 'active' : '' }}">JATIASIH</a>
+                        @endif
+                        @if(auth()->user()->branch === 'cianjur')
                         <a href="{{ url('/gr/cianjur') }}" class="nav-sublink {{ request()->is('gr/cianjur*') ? 'active' : '' }}">CIANJUR</a>
+                        @endif
+                        @if(auth()->user()->branch === 'ciawi')
                         <a href="{{ url('/gr/ciawi') }}" class="nav-sublink {{ request()->is('gr/ciawi*') ? 'active' : '' }}">CIAWI</a>
+                        @endif
                     </div>
                 </div>
+                @endif
+                
+                @auth
+                <div style="margin-top: 24px; padding-top: 12px; border-top: 1px solid var(--border-color);">
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="nav-link" style="width: 100%; text-align: left; background: none; border: none; cursor: pointer; color: var(--accent-red);">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px; height:18px;">
+                                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                                <polyline points="16 17 21 12 16 7"></polyline>
+                                <line x1="21" y1="12" x2="9" y2="12"></line>
+                            </svg>
+                            <span>Logout ({{ strtoupper(auth()->user()->branch) }})</span>
+                        </button>
+                    </form>
+                </div>
+                @endauth
             </nav>
         </aside>
 

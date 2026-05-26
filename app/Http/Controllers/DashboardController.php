@@ -2,10 +2,44 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Piutang;
+
 class DashboardController extends Controller
 {
     public function index()
     {
-        return view('dashboard');
+        /** @var \App\Models\User $user */
+        $user = auth()->user();
+        
+        $records = Piutang::where('branch', $user->branch)->orderByDesc('id')->get();
+
+        $totalPiutang = $records->sum('saldo_akhir');
+        $totalKonsumen = $records->pluck('nama_konsumen')->filter()->unique()->count();
+        $totalDebet = $records->sum('debet');
+        $totalKredit = $records->sum('kredit');
+        $grBranchCount = $records->where('branch', '!=', 'bp')->pluck('branch')->unique()->count();
+        $totalSelisih = $records->sum(function ($item) {
+            return ($item->saldo_awal + $item->debet - $item->kredit) - $item->saldo_akhir;
+        });
+        $branchSummaries = $records->groupBy('branch')->map(function ($group, $branch) {
+            return [
+                'count' => $group->count(),
+                'saldo_akhir' => $group->sum('saldo_akhir'),
+                'debet' => $group->sum('debet'),
+                'kredit' => $group->sum('kredit'),
+            ];
+        })->toArray();
+
+        return view('dashboard', [
+            'records' => $records,
+            'totalPiutang' => $totalPiutang,
+            'totalKonsumen' => $totalKonsumen,
+            'totalDebet' => $totalDebet,
+            'totalKredit' => $totalKredit,
+            'grBranchCount' => $grBranchCount,
+            'totalSelisih' => $totalSelisih,
+            'branchSummaries' => $branchSummaries,
+            'recentRecords' => $records->take(10),
+        ]);
     }
 }

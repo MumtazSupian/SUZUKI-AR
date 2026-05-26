@@ -15,13 +15,17 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        $branches = ['bp', 'cinere', 'jatiasih', 'cianjur', 'ciawi'];
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
-
-        // $this->call(PiutangSeeder::class);
+        foreach ($branches as $branch) {
+            User::firstOrCreate(
+                ['email' => $branch . '@suzuki.com'],
+                [
+                    'name' => strtoupper($branch) . ' User',
+                    'password' => bcrypt('password'),
+                    'branch' => $branch,
+                ]
+            );
+        }
     }
 }
