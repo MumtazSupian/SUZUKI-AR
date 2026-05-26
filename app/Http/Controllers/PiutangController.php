@@ -22,6 +22,10 @@ class PiutangController extends Controller
         $totalDebet = $records->sum('debet');
         $totalKredit = $records->sum('kredit');
         $totalSaldoAkhir = $records->sum('saldo_akhir');
+        
+        $totalSelisih = $records->sum(function ($item) {
+            return ($item->saldo_awal + $item->debet - $item->kredit) - $item->saldo_akhir;
+        });
 
         return view('BP.index', [
             'records' => $records,
@@ -29,6 +33,7 @@ class PiutangController extends Controller
             'totalDebet' => $totalDebet,
             'totalKredit' => $totalKredit,
             'totalSaldoAkhir' => $totalSaldoAkhir,
+            'totalSelisih' => $totalSelisih,
         ]);
     }
 
@@ -73,7 +78,26 @@ class PiutangController extends Controller
     {
         $this->validateBranch($branch);
 
-        return view("GR.$branch.index", ['records' => Piutang::where('branch', $branch)->orderByDesc('id')->get()]);
+        $records = Piutang::where('branch', $branch)->orderByDesc('id')->get();
+
+        // Calculate totals
+        $totalSaldoAwal = $records->sum('saldo_awal');
+        $totalDebet = $records->sum('debet');
+        $totalKredit = $records->sum('kredit');
+        $totalSaldoAkhir = $records->sum('saldo_akhir');
+        
+        $totalSelisih = $records->sum(function ($item) {
+            return ($item->saldo_awal + $item->debet - $item->kredit) - $item->saldo_akhir;
+        });
+
+        return view("GR.$branch.index", [
+            'records' => $records,
+            'totalSaldoAwal' => $totalSaldoAwal,
+            'totalDebet' => $totalDebet,
+            'totalKredit' => $totalKredit,
+            'totalSaldoAkhir' => $totalSaldoAkhir,
+            'totalSelisih' => $totalSelisih,
+        ]);
     }
 
     public function storeGr(Request $request, $branch)

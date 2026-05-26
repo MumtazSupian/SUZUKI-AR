@@ -1,4 +1,4 @@
-﻿@extends('layouts.app')
+@extends('layouts.app')
 
 @section('title', 'GR Cianjur - Rekapitulasi Piutang')
 
@@ -284,7 +284,7 @@
                             <td style="color: #dc2626;">-</td>
                             <td style="color: #dc2626;">-</td>
                             <td colspan="2"></td>
-                            <td style="color: #dc2626;">-</td>
+                            <td style="color: #dc2626;">{{ number_format($totalSelisih ?? 0, 0, '.', ',') }}</td>
                             <td colspan="5"></td>
                         </tr>
                     </tfoot>
