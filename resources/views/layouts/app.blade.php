@@ -235,7 +235,7 @@
                     </div>
                 </div>
                 @endif
-                
+
                 @auth
                 <div style="margin-top: 24px; padding-top: 12px; border-top: 1px solid var(--border-color);">
                     <form method="POST" action="{{ route('logout') }}">
@@ -255,6 +255,17 @@
         </aside>
 
         <main class="main-content">
+            @if (! request()->is('dashboard'))
+                <div style="margin-bottom: 18px;">
+                    <a href="{{ url('/dashboard') }}" class="btn-primary" style="background-color: transparent; color: var(--accent-red); border: 1px solid var(--accent-red); padding: 8px 14px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px; height:16px; color: var(--accent-red);">
+                            <path d="M19 12H5"></path>
+                            <path d="M12 19l-7-7 7-7"></path>
+                        </svg>
+                        Kembali ke Dashboard
+                    </a>
+                </div>
+            @endif
             @yield('content')
         </main>
     </div>

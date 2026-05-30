@@ -3,18 +3,25 @@
 namespace App\Http\Controllers;
 
 use App\Models\Piutang;
+use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
     public function index()
     {
         /** @var \App\Models\User $user */
-        $user = auth()->user();
-        
-        $records = Piutang::where('branch', $user->branch)->orderByDesc('id')->get();
+        $user = Auth::user();
+
+        if (! empty($user) && ($user->is_admin ?? false)) {
+            $records = Piutang::orderByDesc('id')->get();
+        } else {
+            $records = Piutang::where('branch', $user->branch)->orderByDesc('id')->get();
+        }
 
         $totalPiutang = $records->sum('saldo_akhir');
-        $totalKonsumen = $records->pluck('nama_konsumen')->filter()->unique()->count();
+        $totalKonsumen = $records->map(function ($r) {
+            return $r->no_spk ?: $r->nama_konsumen;
+        })->filter()->unique()->count();
         $totalDebet = $records->sum('debet');
         $totalKredit = $records->sum('kredit');
         $grBranchCount = $records->where('branch', '!=', 'bp')->pluck('branch')->unique()->count();

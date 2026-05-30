@@ -119,87 +119,89 @@
         </div>
     @endif
 
-    {{-- Quick Links --}}
-    <div class="table-container" style="padding:24px;">
-        <h2 style="font-size:16px;font-weight:600;margin-bottom:16px;">Akses Cepat</h2>
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;">
-            <a href="{{ url('/bp') }}"
-                style="display:flex;align-items:center;gap:12px;padding:14px 16px;background:var(--bg-primary);border:1px solid var(--border-color);border-radius:10px;text-decoration:none;color:var(--text-primary);transition:all .2s;">
-                <div
-                    style="width:36px;height:36px;background:rgba(59,130,246,.12);border-radius:8px;display:flex;align-items:center;justify-content:center;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
-                        fill="none" stroke="#3b82f6" stroke-width="2">
-                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                        <polyline points="14 2 14 8 20 8" />
-                    </svg>
-                </div>
-                <div>
-                    <div style="font-weight:600;font-size:13px;">BP</div>
-                    <div style="font-size:11px;color:var(--text-muted);">Bukti Piutang</div>
-                </div>
-            </a>
-            <a href="{{ url('/gr/cinere') }}"
-                style="display:flex;align-items:center;gap:12px;padding:14px 16px;background:var(--bg-primary);border:1px solid var(--border-color);border-radius:10px;text-decoration:none;color:var(--text-primary);transition:all .2s;">
-                <div
-                    style="width:36px;height:36px;background:rgba(6,182,212,.12);border-radius:8px;display:flex;align-items:center;justify-content:center;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
-                        fill="none" stroke="#06b6d4" stroke-width="2">
-                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-                        <circle cx="12" cy="10" r="3" />
-                    </svg>
-                </div>
-                <div>
-                    <div style="font-weight:600;font-size:13px;">GR Cinere</div>
-                    <div style="font-size:11px;color:var(--text-muted);">Cabang Cinere</div>
-                </div>
-            </a>
-            <a href="{{ url('/gr/jatiasih') }}"
-                style="display:flex;align-items:center;gap:12px;padding:14px 16px;background:var(--bg-primary);border:1px solid var(--border-color);border-radius:10px;text-decoration:none;color:var(--text-primary);transition:all .2s;">
-                <div
-                    style="width:36px;height:36px;background:rgba(16,185,129,.12);border-radius:8px;display:flex;align-items:center;justify-content:center;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
-                        fill="none" stroke="#10b981" stroke-width="2">
-                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-                        <circle cx="12" cy="10" r="3" />
-                    </svg>
-                </div>
-                <div>
-                    <div style="font-weight:600;font-size:13px;">GR Jatiasih</div>
-                    <div style="font-size:11px;color:var(--text-muted);">Cabang Jatiasih</div>
-                </div>
-            </a>
-            <a href="{{ url('/gr/cianjur') }}"
-                style="display:flex;align-items:center;gap:12px;padding:14px 16px;background:var(--bg-primary);border:1px solid var(--border-color);border-radius:10px;text-decoration:none;color:var(--text-primary);transition:all .2s;">
-                <div
-                    style="width:36px;height:36px;background:rgba(245,158,11,.12);border-radius:8px;display:flex;align-items:center;justify-content:center;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
-                        fill="none" stroke="#f59e0b" stroke-width="2">
-                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-                        <circle cx="12" cy="10" r="3" />
-                    </svg>
-                </div>
-                <div>
-                    <div style="font-weight:600;font-size:13px;">GR Cianjur</div>
-                    <div style="font-size:11px;color:var(--text-muted);">Cabang Cianjur</div>
-                </div>
-            </a>
-            <a href="{{ url('/gr/ciawi') }}"
-                style="display:flex;align-items:center;gap:12px;padding:14px 16px;background:var(--bg-primary);border:1px solid var(--border-color);border-radius:10px;text-decoration:none;color:var(--text-primary);transition:all .2s;">
-                <div
-                    style="width:36px;height:36px;background:rgba(139,92,246,.12);border-radius:8px;display:flex;align-items:center;justify-content:center;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
-                        fill="none" stroke="#8b5cf6" stroke-width="2">
-                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-                        <circle cx="12" cy="10" r="3" />
-                    </svg>
-                </div>
-                <div>
-                    <div style="font-weight:600;font-size:13px;">GR Ciawi</div>
-                    <div style="font-size:11px;color:var(--text-muted);">Cabang Ciawi</div>
-                </div>
-            </a>
+    @if(auth()->check() && auth()->user()->is_admin)
+        {{-- Quick Links --}}
+        <div class="table-container" style="padding:24px;">
+            <h2 style="font-size:16px;font-weight:600;margin-bottom:16px;">Akses Cepat</h2>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;">
+                <a href="{{ url('/bp') }}"
+                    style="display:flex;align-items:center;gap:12px;padding:14px 16px;background:var(--bg-primary);border:1px solid var(--border-color);border-radius:10px;text-decoration:none;color:var(--text-primary);transition:all .2s;">
+                    <div
+                        style="width:36px;height:36px;background:rgba(59,130,246,.12);border-radius:8px;display:flex;align-items:center;justify-content:center;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                            fill="none" stroke="#3b82f6" stroke-width="2">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                            <polyline points="14 2 14 8 20 8" />
+                        </svg>
+                    </div>
+                    <div>
+                        <div style="font-weight:600;font-size:13px;">BP</div>
+                        <div style="font-size:11px;color:var(--text-muted);">Bukti Piutang</div>
+                    </div>
+                </a>
+                <a href="{{ url('/gr/cinere') }}"
+                    style="display:flex;align-items:center;gap:12px;padding:14px 16px;background:var(--bg-primary);border:1px solid var(--border-color);border-radius:10px;text-decoration:none;color:var(--text-primary);transition:all .2s;">
+                    <div
+                        style="width:36px;height:36px;background:rgba(6,182,212,.12);border-radius:8px;display:flex;align-items:center;justify-content:center;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                            fill="none" stroke="#06b6d4" stroke-width="2">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                            <circle cx="12" cy="10" r="3" />
+                        </svg>
+                    </div>
+                    <div>
+                        <div style="font-weight:600;font-size:13px;">GR Cinere</div>
+                        <div style="font-size:11px;color:var(--text-muted);">Cabang Cinere</div>
+                    </div>
+                </a>
+                <a href="{{ url('/gr/jatiasih') }}"
+                    style="display:flex;align-items:center;gap:12px;padding:14px 16px;background:var(--bg-primary);border:1px solid var(--border-color);border-radius:10px;text-decoration:none;color:var(--text-primary);transition:all .2s;">
+                    <div
+                        style="width:36px;height:36px;background:rgba(16,185,129,.12);border-radius:8px;display:flex;align-items:center;justify-content:center;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                            fill="none" stroke="#10b981" stroke-width="2">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                            <circle cx="12" cy="10" r="3" />
+                        </svg>
+                    </div>
+                    <div>
+                        <div style="font-weight:600;font-size:13px;">GR Jatiasih</div>
+                        <div style="font-size:11px;color:var(--text-muted);">Cabang Jatiasih</div>
+                    </div>
+                </a>
+                <a href="{{ url('/gr/cianjur') }}"
+                    style="display:flex;align-items:center;gap:12px;padding:14px 16px;background:var(--bg-primary);border:1px solid var(--border-color);border-radius:10px;text-decoration:none;color:var(--text-primary);transition:all .2s;">
+                    <div
+                        style="width:36px;height:36px;background:rgba(245,158,11,.12);border-radius:8px;display:flex;align-items:center;justify-content:center;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                            fill="none" stroke="#f59e0b" stroke-width="2">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                            <circle cx="12" cy="10" r="3" />
+                        </svg>
+                    </div>
+                    <div>
+                        <div style="font-weight:600;font-size:13px;">GR Cianjur</div>
+                        <div style="font-size:11px;color:var(--text-muted);">Cabang Cianjur</div>
+                    </div>
+                </a>
+                <a href="{{ url('/gr/ciawi') }}"
+                    style="display:flex;align-items:center;gap:12px;padding:14px 16px;background:var(--bg-primary);border:1px solid var(--border-color);border-radius:10px;text-decoration:none;color:var(--text-primary);transition:all .2s;">
+                    <div
+                        style="width:36px;height:36px;background:rgba(139,92,246,.12);border-radius:8px;display:flex;align-items:center;justify-content:center;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                            fill="none" stroke="#8b5cf6" stroke-width="2">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                            <circle cx="12" cy="10" r="3" />
+                        </svg>
+                    </div>
+                    <div>
+                        <div style="font-weight:600;font-size:13px;">GR Ciawi</div>
+                        <div style="font-size:11px;color:var(--text-muted);">Cabang Ciawi</div>
+                    </div>
+                </a>
+            </div>
         </div>
-    </div>
+    @endif
 
     <div class="table-container" style="padding:24px; margin-top:24px;">
         <h2 style="font-size:16px;font-weight:600;margin-bottom:16px;">Data Terbaru Semua Cabang</h2>
@@ -212,7 +214,7 @@
                             Cabang</th>
                         <th
                             style="text-align:left;padding:12px 10px;font-size:12px;color:#4b5563;border-bottom:1px solid #e5e7eb;">
-                            Nama Konsumen</th>
+                            No SPK</th>
                         <th
                             style="text-align:left;padding:12px 10px;font-size:12px;color:#4b5563;border-bottom:1px solid #e5e7eb;">
                             No. Bukti</th>
@@ -235,7 +237,7 @@
                         <tr style="border-bottom:1px solid #e5e7eb;">
                             <td style="padding:12px 10px;font-size:13px;color:#111827;">
                                 {{ $record->branch === 'bp' ? 'BP' : 'GR ' . ucfirst($record->branch) }}</td>
-                            <td style="padding:12px 10px;font-size:13px;color:#111827;">{{ $record->nama_konsumen }}</td>
+                            <td style="padding:12px 10px;font-size:13px;color:#111827;">{{ $record->no_spk ?? $record->nama_konsumen }}</td>
                             <td style="padding:12px 10px;font-size:13px;color:#111827;">{{ $record->no_bukti }}</td>
                             <td style="padding:12px 10px;font-size:13px;color:#111827;">
                                 {{ optional($record->tgl_bukti)->format('d M Y') }}</td>

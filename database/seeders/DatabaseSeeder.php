@@ -27,5 +27,8 @@ class DatabaseSeeder extends Seeder
                 ]
             );
         }
+
+        // Seed an admin user who can view all data
+        $this->call(AdminUserSeeder::class);
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Piutang;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PiutangController extends Controller
 {
@@ -12,17 +13,17 @@ class PiutangController extends Controller
     public function indexBp()
     {
         /** @var \App\Models\User $user */
-        $user = auth()->user();
-        abort_if($user->branch !== 'bp', 403, 'Unauthorized action.');
+        $user = Auth::user();
+        abort_if((! ($user->is_admin ?? false)) && $user->branch !== 'bp', 403, 'Unauthorized action.');
 
-        $records = Piutang::where('branch', 'bp')->orderByDesc('id')->get();
+        $records = Piutang::when(! ($user->is_admin ?? false), fn($q) => $q->where('branch', 'bp'))->orderByDesc('id')->get();
 
         // Calculate totals
         $totalSaldoAwal = $records->sum('saldo_awal');
         $totalDebet = $records->sum('debet');
         $totalKredit = $records->sum('kredit');
         $totalSaldoAkhir = $records->sum('saldo_akhir');
-        
+
         $totalSelisih = $records->sum(function ($item) {
             return ($item->saldo_awal + $item->debet - $item->kredit) - $item->saldo_akhir;
         });
@@ -40,18 +41,19 @@ class PiutangController extends Controller
     public function storeBp(Request $request)
     {
         /** @var \App\Models\User $user */
-        $user = auth()->user();
-        abort_if($user->branch !== 'bp', 403, 'Unauthorized action.');
+        $user = Auth::user();
+        abort_if((! ($user->is_admin ?? false)) && $user->branch !== 'bp', 403, 'Unauthorized action.');
         return $this->store($request, 'bp');
     }
 
     public function editBp($id)
     {
         /** @var \App\Models\User $user */
-        $user = auth()->user();
-        abort_if($user->branch !== 'bp', 403, 'Unauthorized action.');
+        $user = Auth::user();
+        abort_if((! ($user->is_admin ?? false)) && $user->branch !== 'bp', 403, 'Unauthorized action.');
 
-        $record = Piutang::where('branch', 'bp')->findOrFail($id);
+        $record = Piutang::when(! ($user->is_admin ?? false), fn($q) => $q->where('branch', 'bp'))
+            ->findOrFail($id);
 
         return view('BP.edit', compact('record', 'id'));
     }
@@ -59,17 +61,33 @@ class PiutangController extends Controller
     public function updateBp(Request $request, $id)
     {
         /** @var \App\Models\User $user */
-        $user = auth()->user();
-        abort_if($user->branch !== 'bp', 403, 'Unauthorized action.');
-        return $this->update($request, 'bp', $id);
+        $user = Auth::user();
+        abort_if((! ($user->is_admin ?? false)) && $user->branch !== 'bp', 403, 'Unauthorized action.');
+
+        $record = Piutang::when(! ($user->is_admin ?? false), fn($q) => $q->where('branch', 'bp'))
+            ->findOrFail($id);
+
+        $data = $this->validateData($request);
+        $data = $this->normalizeNumericData($data);
+
+        if (! isset($data['saldo_akhir']) || $data['saldo_akhir'] === null || $data['saldo_akhir'] === '') {
+            $data['saldo_akhir'] = $this->calculateSaldoAkhir($data);
+        }
+
+        $record->update($data);
+
+        return redirect('/bp');
     }
 
     public function destroyBp($id)
     {
         /** @var \App\Models\User $user */
-        $user = auth()->user();
-        abort_if($user->branch !== 'bp', 403, 'Unauthorized action.');
-        Piutang::where('branch', 'bp')->findOrFail($id)->delete();
+        $user = Auth::user();
+        abort_if((! ($user->is_admin ?? false)) && $user->branch !== 'bp', 403, 'Unauthorized action.');
+
+        $record = Piutang::when(! ($user->is_admin ?? false), fn($q) => $q->where('branch', 'bp'))
+            ->findOrFail($id);
+        $record->delete();
 
         return redirect('/bp');
     }
@@ -85,7 +103,7 @@ class PiutangController extends Controller
         $totalDebet = $records->sum('debet');
         $totalKredit = $records->sum('kredit');
         $totalSaldoAkhir = $records->sum('saldo_akhir');
-        
+
         $totalSelisih = $records->sum(function ($item) {
             return ($item->saldo_awal + $item->debet - $item->kredit) - $item->saldo_akhir;
         });
@@ -139,8 +157,8 @@ class PiutangController extends Controller
         }
 
         /** @var \App\Models\User $user */
-        $user = auth()->user();
-        abort_if($user->branch !== $branch, 403, 'Unauthorized action.');
+        $user = Auth::user();
+        abort_if((! ($user->is_admin ?? false)) && $user->branch !== $branch, 403, 'Unauthorized action.');
     }
 
     private function store(Request $request, string $branch)

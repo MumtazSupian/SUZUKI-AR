@@ -31,9 +31,10 @@
             <thead>
                 <tr>
                     <th rowspan="2">NO</th>
-                    <th rowspan="2">NAMA KONSUMEN</th>
+                    <th rowspan="2">NO SPK</th>
                     <th rowspan="2">TGL. BUKTI</th>
                     <th rowspan="2">NO. BUKTI</th>
+                    <th rowspan="2">SPK</th>
                     <th rowspan="2">SALDO AWAL</th>
                     <th colspan="2" style="text-align:center; border-bottom:1px solid var(--border-color);">MUTASI</th>
                     <th rowspan="2">TGL. BUKTI</th>
@@ -186,8 +187,8 @@
             <form id="createForm">
                 <div class="form-grid">
                     <div class="form-group">
-                        <label class="form-label">Nama Konsumen</label>
-                        <input type="text" class="form-input" placeholder="Nama konsumen" id="inputNamaKonsumen">
+                        <label class="form-label">No SPK</label>
+                        <input type="text" name="no_spk" class="form-input" placeholder="No SPK" id="inputNoSpk">
                     </div>
                     <div class="form-group">
                         <label class="form-label">Tgl. Bukti</label>
@@ -199,7 +200,16 @@
                     </div>
                     <div class="form-group">
                         <label class="form-label">Saldo Awal</label>
-                        <input type="text" class="form-input" placeholder="0" id="inputSaldoAwal">
+                        <input type="text" name="saldo_awal" class="form-input" placeholder="0" id="inputSaldoAwal">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Kategori SPK</label>
+                        <select name="spk_type" class="form-select" id="inputSpkType">
+                            <option value="">Pilih Jenis SPK</option>
+                            <option value="ASURANSI">ASURANSI</option>
+                            <option value="REGULER">REGULER</option>
+                            <option value="INTERNAL">INTERNAL</option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label class="form-label">Debet</label>
@@ -229,14 +239,7 @@
                         <label class="form-label">No Polis</label>
                         <input type="text" class="form-input" placeholder="Nomor polis" id="inputNoPolis">
                     </div>
-                    <div class="form-group">
-                        <label class="form-label">SPK</label>
-                        <select class="form-select" id="inputSpkType">
-                            <option value="">Pilih Jenis SPK</option>
-                            <option value="asuransi">ASURANSI</option>
-                            <option value="reguler">REGULER</option>
-                        </select>
-                    </div>
+
                     <div class="form-group full-width">
                         <label class="form-label">Saldo Akhir</label>
                         <input type="text" class="form-input" placeholder="Saldo Akhir" id="inputNomorSpk">

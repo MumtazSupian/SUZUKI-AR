@@ -6,7 +6,7 @@
     <div style="width: 100%; box-sizing: border-box; overflow-x: hidden;">
         <div class="page-header" style="margin-bottom: 20px;">
             <div>
-                <h1 class="page-title">Rekapitulasi Piutang</h1>
+                <h1 class="page-title">Rekapitulasi Piutang - BP</h1>
                 <p class="page-subtitle">Kelola data saldo awal, mutasi, rekonsiliasi GL, dan saldo akhir konsumen secara
                     instan.</p>
             </div>
@@ -144,9 +144,10 @@
                     <thead>
                         <tr>
                             <th rowspan="2">NO</th>
-                            <th rowspan="2">NAMA KONSUMEN</th>
+                            <th rowspan="2">NO SPK</th>
                             <th rowspan="2">TGL. BUKTI</th>
                             <th rowspan="2" class="col-bukti">NO. BUKTI</th>
+                            <th rowspan="2" class="col-spk">KATEGORI SPK</th>
                             <th rowspan="2">SALDO AWAL</th>
                             <th colspan="2" style="text-align:center;">MUTASI</th>
                             <th rowspan="2" class="col-rek-tgl">TGL. BUKTI</th>
@@ -155,7 +156,6 @@
                             <th rowspan="2" class="col-keterangan">KETERANGAN</th>
                             <th rowspan="2" class="col-no-polisi">NO POLISI</th>
                             <th rowspan="2" class="col-no-polis">NO POLIS</th>
-                            <th rowspan="2" class="col-spk">KATEGORI SPK</th>
                             <th rowspan="2" class="col-action">AKSI</th>
                         </tr>
                         <tr>
@@ -213,9 +213,10 @@
 
                             <tr style="{{ $rowStyle }}">
                                 <td style="text-align: center;">{{ $loop->iteration }}.</td>
-                                <td>{{ $row->nama_konsumen ?? ($row['nama_konsumen'] ?? '-') }}</td>
+                                <td>{{ $row->no_spk ?? $row->nama_konsumen ?? ($row['no_spk'] ?? '-') }}</td>
                                 <td>{{ $tglBukti }}</td>
                                 <td>{{ $row->no_bukti ?? ($row['no_bukti'] ?? '-') }}</td>
+                                <td class="col-spk">{{ strtoupper($row->spk_type ?? ($row['spk_type'] ?? '-')) }}</td>
                                 <td class="text-bold">
                                     {{ is_numeric($saldoAwal) ? number_format($saldoAwal, 0, '.', ',') : '-' }}</td>
                                 <td style="color: #111827 !important; font-weight: 800;">
@@ -229,7 +230,6 @@
                                 <td class="col-keterangan">{{ $row->keterangan ?? ($row['keterangan'] ?? '-') }}</td>
                                 <td class="col-no-polisi">{{ $row->no_polisi ?? ($row['no_polisi'] ?? '-') }}</td>
                                 <td class="col-no-polis">{{ $row->no_polis ?? ($row['no_polis'] ?? '-') }}</td>
-                                <td class="col-spk">{{ strtoupper($row->spk_type ?? ($row['spk_type'] ?? '-')) }}</td>
                                 <td class="col-action"
                                     style="background-color: #ffffff !important; border-left: 1px solid #e5e7eb;">
                                     <div
@@ -257,7 +257,7 @@
                     {{-- Bagian Footer / Summary --}}
                     <tfoot>
                         <tr style="background-color: #eff6ff; font-weight: 600;">
-                            <td colspan="4"
+                            <td colspan="5"
                                 style="text-align: right; padding-right: 16px; font-weight: bold; color: #111827;">Total
                             </td>
                             <td style="color: #111827;">{{ number_format($totalSaldoAwal ?? 0, 0, '.', ',') }}</td>
@@ -265,31 +265,31 @@
                             <td style="color: #111827;">{{ number_format($totalKredit ?? 0, 0, '.', ',') }}</td>
                             <td colspan="2"></td>
                             <td style="color: #111827;">{{ number_format($totalSaldoAkhir ?? 0, 0, '.', ',') }}</td>
-                            <td colspan="5"></td>
+                            <td colspan="4"></td>
                         </tr>
                         @php
                             $glSaldoAwal = $totalSaldoAwal ?? 0;
                             $glDebet = $totalDebet ?? 0;
                             $glKredit = $totalKredit ?? 0;
                             $glSaldoAkhir = $totalSaldoAkhir ?? 0;
-                            
+
                             $selisihAwal = ($totalSaldoAwal ?? 0) - $glSaldoAwal;
                             $selisihDebet = ($totalDebet ?? 0) - $glDebet;
                             $selisihKredit = ($totalKredit ?? 0) - $glKredit;
                             $selisihAkhir = ($totalSaldoAkhir ?? 0) - $glSaldoAkhir;
                         @endphp
                         <tr style="background-color: #f8fafc; font-weight: 600;">
-                            <td colspan="4"
+                            <td colspan="5"
                                 style="text-align: right; padding-right: 16px; font-weight: bold; color: #111827;">GL</td>
                             <td style="color: #111827;">{{ number_format($glSaldoAwal, 0, '.', ',') }}</td>
                             <td style="color: #111827;">{{ number_format($glDebet, 0, '.', ',') }}</td>
                             <td style="color: #111827;">{{ number_format($glKredit, 0, '.', ',') }}</td>
                             <td colspan="2"></td>
                             <td style="color: #111827;">{{ number_format($glSaldoAkhir, 0, '.', ',') }}</td>
-                            <td colspan="5"></td>
+                            <td colspan="4"></td>
                         </tr>
                         <tr style="background-color: #fef2f2; font-weight: 600;">
-                            <td colspan="4"
+                            <td colspan="5"
                                 style="text-align: right; padding-right: 16px; font-weight: bold; color: #dc2626;">SELISIH
                             </td>
                             <td style="color: #dc2626;">{{ $selisihAwal == 0 ? '-' : number_format($selisihAwal, 0, '.', ',') }}</td>
@@ -297,7 +297,7 @@
                             <td style="color: #dc2626;">{{ $selisihKredit == 0 ? '-' : number_format($selisihKredit, 0, '.', ',') }}</td>
                             <td colspan="2"></td>
                             <td style="color: #dc2626;">{{ $selisihAkhir == 0 ? '-' : number_format($selisihAkhir, 0, '.', ',') }}</td>
-                            <td colspan="5"></td>
+                            <td colspan="4"></td>
                         </tr>
                     </tfoot>
                 </table>
@@ -327,9 +327,9 @@
                         <div class="form-grid"
                             style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px;">
                             <div class="form-group">
-                                <label class="form-label">Nama Konsumen</label>
-                                <input type="text" name="nama_konsumen" class="form-input"
-                                    placeholder="Nama konsumen" value="{{ old('nama_konsumen') }}">
+                                <label class="form-label">No SPK</label>
+                                <input type="text" name="no_spk" class="form-input"
+                                    placeholder="No SPK" value="{{ old('no_spk') }}">
                             </div>
                             <div class="form-group">
                                 <label class="form-label">Tgl. Bukti</label>
@@ -345,6 +345,15 @@
                                 <label class="form-label">Saldo Awal</label>
                                 <input type="text" name="saldo_awal" class="form-input" placeholder="0"
                                     value="{{ old('saldo_awal') }}">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">KATEGORI SPK</label>
+                                <select class="form-select" name="spk_type" style="width: 100%;">
+                                    <option value="">Pilih Jenis SPK</option>
+                                    <option value="ASURANSI">ASURANSI</option>
+                                    <option value="REGULER">REGULER</option>
+                                    <option value="INTERNAL">INTERNAL</option>
+                                </select>
                             </div>
                             <div class="form-group">
                                 <label class="form-label">Debet</label>

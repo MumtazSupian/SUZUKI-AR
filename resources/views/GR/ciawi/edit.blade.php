@@ -104,8 +104,8 @@
             <span class="section-title" style="color: #dc2626; border-bottom-color: #fca5a5;">1. Informasi Konsumen</span>
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px;">
                 <div class="form-group">
-                    <label class="form-label">Nama Konsumen</label>
-                    <input type="text" name="nama_konsumen" class="form-input" value="{{ old('nama_konsumen', $record->nama_konsumen ?? ($record['nama_konsumen'] ?? '')) }}">
+                    <label class="form-label">No SPK</label>
+                    <input type="text" name="no_spk" class="form-input" value="{{ old('no_spk', $record->no_spk ?? ($record['no_spk'] ?? '')) }}">
                 </div>
                 <div class="form-group">
                     <label class="form-label">No. Polisi (Plat)</label>
@@ -142,6 +142,15 @@
                 <div class="form-group">
                     <label class="form-label">Saldo Pembukuan (Awal)</label>
                     <input type="text" name="saldo_awal" class="form-input" value="{{ old('saldo_awal', $record->saldo_awal ?? ($record['saldo_awal'] ?? '')) }}">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">KATEGORI SPK</label>
+                    <select class="form-select" name="spk_type">
+                        <option value="">Pilih Jenis SPK</option>
+                        <option value="ASURANSI" {{ old('spk_type', $record->spk_type ?? ($record['spk_type'] ?? '')) == 'ASURANSI' ? 'selected' : '' }}>ASURANSI</option>
+                        <option value="REGULER" {{ old('spk_type', $record->spk_type ?? ($record['spk_type'] ?? '')) == 'REGULER' ? 'selected' : '' }}>REGULER</option>
+                        <option value="INTERNAL" {{ old('spk_type', $record->spk_type ?? ($record['spk_type'] ?? '')) == 'INTERNAL' ? 'selected' : '' }}>INTERNAL</option>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label class="form-label">Debet</label>
