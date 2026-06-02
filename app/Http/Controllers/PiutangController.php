@@ -68,6 +68,7 @@ class PiutangController extends Controller
             ->findOrFail($id);
 
         $data = $this->validateData($request);
+        $data = $this->preserveHiddenPaymentStages($data, $record);
         $data = $this->normalizeNumericData($data);
 
         if (! isset($data['saldo_akhir']) || $data['saldo_akhir'] === null || $data['saldo_akhir'] === '') {
@@ -180,6 +181,7 @@ class PiutangController extends Controller
     {
         $record = Piutang::where('branch', $branch)->findOrFail($id);
         $data = $this->validateData($request);
+        $data = $this->preserveHiddenPaymentStages($data, $record);
         $data = $this->normalizeNumericData($data);
 
         if (! isset($data['saldo_akhir']) || $data['saldo_akhir'] === null || $data['saldo_akhir'] === '') {
@@ -203,6 +205,12 @@ class PiutangController extends Controller
             'tgl_bukti_rek' => ['nullable', 'date'],
             'no_bukti_rek' => ['nullable', 'string', 'max:100'],
             'keterangan' => ['nullable', 'string', 'max:255'],
+            'tgl_bukti_rek_2' => ['nullable', 'date'],
+            'no_bukti_rek_2' => ['nullable', 'string', 'max:100'],
+            'keterangan_2' => ['nullable', 'string', 'max:255'],
+            'tgl_bukti_rek_3' => ['nullable', 'date'],
+            'no_bukti_rek_3' => ['nullable', 'string', 'max:100'],
+            'keterangan_3' => ['nullable', 'string', 'max:255'],
             'no_polisi' => ['nullable', 'string', 'max:100'],
             'no_polis' => ['nullable', 'string', 'max:100'],
             'spk_type' => ['nullable', 'string', 'in:ASURANSI,REGULER,INTERNAL'],
@@ -231,5 +239,25 @@ class PiutangController extends Controller
         $kredit = isset($data['kredit']) ? floatval($data['kredit']) : 0;
 
         return $saldoAwal + $debet - $kredit;
+    }
+
+    private function preserveHiddenPaymentStages(array $data, Piutang $record): array
+    {
+        foreach (
+            [
+                'tgl_bukti_rek_2',
+                'no_bukti_rek_2',
+                'keterangan_2',
+                'tgl_bukti_rek_3',
+                'no_bukti_rek_3',
+                'keterangan_3',
+            ] as $field
+        ) {
+            if (array_key_exists($field, $data) && ($data[$field] === null || $data[$field] === '')) {
+                unset($data[$field]);
+            }
+        }
+
+        return $data;
     }
 }

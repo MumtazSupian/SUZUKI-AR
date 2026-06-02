@@ -7,7 +7,8 @@
         <div class="page-header" style="margin-bottom: 20px;">
             <div>
                 <h1 class="page-title">Rekapitulasi Piutang - GR Cianjur</h1>
-                <p class="page-subtitle">Kelola data saldo awal, mutasi, rekonsiliasi GL, dan saldo akhir konsumen cabang Cianjur.</p>
+                <p class="page-subtitle">Kelola data saldo awal, mutasi, rekonsiliasi GL, dan saldo akhir konsumen cabang
+                    Cianjur.</p>
             </div>
             <div class="server-time">
                 <span class="dot"></span>
@@ -151,8 +152,14 @@
                             <th colspan="2" style="text-align:center;">MUTASI</th>
                             <th rowspan="2" class="col-rek-tgl">TGL. BUKTI</th>
                             <th rowspan="2" class="hl col-rek-no">NO. BUKTI</th>
-                            <th rowspan="2">SALDO AKHIR</th>
                             <th rowspan="2" class="col-keterangan">KETERANGAN</th>
+                            <th rowspan="2">TGL. BUKTI TAHAP 2</th>
+                            <th rowspan="2">NO. BUKTI TAHAP 2</th>
+                            <th rowspan="2">KETERANGAN TAHAP 2</th>
+                            <th rowspan="2">TGL. BUKTI TAHAP 3</th>
+                            <th rowspan="2">NO. BUKTI TAHAP 3</th>
+                            <th rowspan="2">KETERANGAN TAHAP 3</th>
+                            <th rowspan="2">SALDO AKHIR</th>
                             <th rowspan="2" class="col-no-polisi">NO POLISI</th>
                             <th rowspan="2" class="col-no-polis">NO POLIS</th>
                             <th rowspan="2" class="col-action">AKSI</th>
@@ -167,11 +174,21 @@
                             @php
                                 $rawTglBukti = $row->tgl_bukti ?? ($row['tgl_bukti'] ?? null);
                                 $rawTglRek = $row->tgl_bukti_rek ?? ($row['tgl_bukti_rek'] ?? null);
+                                $rawTglRek2 = $row->tgl_bukti_rek_2 ?? ($row['tgl_bukti_rek_2'] ?? null);
+                                $rawTglRek3 = $row->tgl_bukti_rek_3 ?? ($row['tgl_bukti_rek_3'] ?? null);
                                 $tglBukti = $rawTglBukti
                                     ? \Illuminate\Support\Carbon::parse($rawTglBukti)->format('d F Y')
                                     : '-';
                                 $tglRek = $rawTglRek
                                     ? \Illuminate\Support\Carbon::parse($rawTglRek)->format('d F Y')
+                                    : '-';
+
+                                $tglRek2 = $rawTglRek2
+                                    ? \Illuminate\Support\Carbon::parse($rawTglRek2)->format('d F Y')
+                                    : '-';
+
+                                $tglRek3 = $rawTglRek3
+                                    ? \Illuminate\Support\Carbon::parse($rawTglRek3)->format('d F Y')
                                     : '-';
 
                                 $saldoAwal = $row->saldo_awal ?? ($row['saldo_awal'] ?? 0);
@@ -195,18 +212,22 @@
 
                                     // 2. LOGIC PEWARNAAN BERDASARKAN WAKTU DAN KATEGORI SPK
                                     $kategoriSpk = strtoupper($row->spk_type ?? ($row['spk_type'] ?? ''));
-                                    
+
                                     if ($kategoriSpk === 'ASURANSI') {
                                         if ($selisihHari >= 35) {
-                                            $rowStyle = 'background-color: #f87171 !important; color: #111827 !important; font-weight: 600;';
+                                            $rowStyle =
+                                                'background-color: #f87171 !important; color: #111827 !important; font-weight: 600;';
                                         } else {
-                                            $rowStyle = 'background-color: #4ade80 !important; color: #111827 !important; font-weight: 600;';
+                                            $rowStyle =
+                                                'background-color: #4ade80 !important; color: #111827 !important; font-weight: 600;';
                                         }
                                     } elseif ($kategoriSpk === 'REGULER') {
                                         if ($selisihHari >= 7) {
-                                            $rowStyle = 'background-color: #f87171 !important; color: #111827 !important; font-weight: 600;';
+                                            $rowStyle =
+                                                'background-color: #f87171 !important; color: #111827 !important; font-weight: 600;';
                                         } else {
-                                            $rowStyle = 'background-color: #4ade80 !important; color: #111827 !important; font-weight: 600;';
+                                            $rowStyle =
+                                                'background-color: #4ade80 !important; color: #111827 !important; font-weight: 600;';
                                         }
                                     } elseif ($kategoriSpk === 'INTERNAL') {
                                         // Biasa saja, tidak ada perubahan warna dari default
@@ -216,7 +237,7 @@
 
                             <tr style="{{ $rowStyle }}">
                                 <td style="text-align: center;">{{ $loop->iteration }}.</td>
-                                <td>{{ $row->no_spk ?? $row->nama_konsumen ?? ($row['no_spk'] ?? '-') }}</td>
+                                <td>{{ $row->no_spk ?? ($row->nama_konsumen ?? ($row['no_spk'] ?? '-')) }}</td>
                                 <td>{{ $tglBukti }}</td>
                                 <td>{{ $row->no_bukti ?? ($row['no_bukti'] ?? '-') }}</td>
                                 <td class="col-spk">{{ strtoupper($row->spk_type ?? ($row['spk_type'] ?? '-')) }}</td>
@@ -228,9 +249,18 @@
                                     {{ is_numeric($kredit) ? number_format($kredit, 0, '.', ',') : '-' }}</td>
                                 <td class="col-rek-tgl">{{ $tglRek }}</td>
                                 <td class="col-rek-no">{{ $row->no_bukti_rek ?? ($row['no_bukti_rek'] ?? '-') }}</td>
+                                <td class="col-keterangan">{{ $row->keterangan ?? ($row['keterangan'] ?? '-') }}</td>
+
+                                <td class="col-rek-tgl">{{ $tglRek2 }}</td>
+                                <td class="col-rek-no">{{ $row->no_bukti_rek_2 ?? ($row['no_bukti_rek_2'] ?? '-') }}</td>
+                                <td class="col-keterangan">{{ $row->keterangan_2 ?? ($row['keterangan_2'] ?? '-') }}</td>
+
+                                <td class="col-rek-tgl">{{ $tglRek3 }}</td>
+                                <td class="col-rek-no">{{ $row->no_bukti_rek_3 ?? ($row['no_bukti_rek_3'] ?? '-') }}</td>
+                                <td class="col-keterangan">{{ $row->keterangan_3 ?? ($row['keterangan_3'] ?? '-') }}</td>
+
                                 <td class="text-bold">
                                     {{ is_numeric($saldoAkhir) ? number_format($saldoAkhir, 0, '.', ',') : '-' }}</td>
-                                <td class="col-keterangan">{{ $row->keterangan ?? ($row['keterangan'] ?? '-') }}</td>
                                 <td class="col-no-polisi">{{ $row->no_polisi ?? ($row['no_polisi'] ?? '-') }}</td>
                                 <td class="col-no-polis">{{ $row->no_polis ?? ($row['no_polis'] ?? '-') }}</td>
                                 <td class="col-action"
@@ -240,7 +270,8 @@
                                         <a href="{{ url('/gr/cianjur/' . ($row->id ?? ($row['id'] ?? '')) . '/edit') }}"
                                             class="action-btn edit" title="Edit"
                                             style="text-decoration: none; color: #2563eb !important; font-size: 16px; font-weight: bold;">✎</a>
-                                        <form method="POST" action="{{ url('/gr/cianjur/' . ($row->id ?? ($row['id'] ?? ''))) }}"
+                                        <form method="POST"
+                                            action="{{ url('/gr/cianjur/' . ($row->id ?? ($row['id'] ?? ''))) }}"
                                             style="display:inline; margin: 0;">
                                             @csrf @method('DELETE')
                                             <button class="action-btn delete" title="Hapus"
@@ -251,7 +282,7 @@
                             </tr>
                         @empty
                             <tr class="no-data-row" style="background-color: #ffffff;">
-                                <td colspan="15" style="text-align:center; color: #6b7280 !important; padding: 20px;">
+                                <td colspan="21" style="text-align:center; color: #6b7280 !important; padding: 20px;">
                                     Tidak ada data untuk ditampilkan.</td>
                             </tr>
                         @endforelse
@@ -266,9 +297,9 @@
                             <td style="color: #111827;">{{ number_format($totalSaldoAwal ?? 0, 0, '.', ',') }}</td>
                             <td style="color: #111827;">{{ number_format($totalDebet ?? 0, 0, '.', ',') }}</td>
                             <td style="color: #111827;">{{ number_format($totalKredit ?? 0, 0, '.', ',') }}</td>
-                            <td colspan="2"></td>
+                            <td colspan="9"></td>
                             <td style="color: #111827;">{{ number_format($totalSaldoAkhir ?? 0, 0, '.', ',') }}</td>
-                            <td colspan="4"></td>
+                            <td colspan="3"></td>
                         </tr>
                         @php
                             $glSaldoAwal = $totalSaldoAwal ?? 0;
@@ -287,20 +318,24 @@
                             <td style="color: #111827;">{{ number_format($glSaldoAwal, 0, '.', ',') }}</td>
                             <td style="color: #111827;">{{ number_format($glDebet, 0, '.', ',') }}</td>
                             <td style="color: #111827;">{{ number_format($glKredit, 0, '.', ',') }}</td>
-                            <td colspan="2"></td>
+                            <td colspan="9"></td>
                             <td style="color: #111827;">{{ number_format($glSaldoAkhir, 0, '.', ',') }}</td>
-                            <td colspan="4"></td>
+                            <td colspan="3"></td>
                         </tr>
                         <tr style="background-color: #fef2f2; font-weight: 600;">
                             <td colspan="5"
                                 style="text-align: right; padding-right: 16px; font-weight: bold; color: #dc2626;">SELISIH
                             </td>
-                            <td style="color: #dc2626;">{{ $selisihAwal == 0 ? '-' : number_format($selisihAwal, 0, '.', ',') }}</td>
-                            <td style="color: #dc2626;">{{ $selisihDebet == 0 ? '-' : number_format($selisihDebet, 0, '.', ',') }}</td>
-                            <td style="color: #dc2626;">{{ $selisihKredit == 0 ? '-' : number_format($selisihKredit, 0, '.', ',') }}</td>
-                            <td colspan="2"></td>
-                            <td style="color: #dc2626;">{{ $selisihAkhir == 0 ? '-' : number_format($selisihAkhir, 0, '.', ',') }}</td>
-                            <td colspan="4"></td>
+                            <td style="color: #dc2626;">
+                                {{ $selisihAwal == 0 ? '-' : number_format($selisihAwal, 0, '.', ',') }}</td>
+                            <td style="color: #dc2626;">
+                                {{ $selisihDebet == 0 ? '-' : number_format($selisihDebet, 0, '.', ',') }}</td>
+                            <td style="color: #dc2626;">
+                                {{ $selisihKredit == 0 ? '-' : number_format($selisihKredit, 0, '.', ',') }}</td>
+                            <td colspan="9"></td>
+                            <td style="color: #dc2626;">
+                                {{ $selisihAkhir == 0 ? '-' : number_format($selisihAkhir, 0, '.', ',') }}</td>
+                            <td colspan="3"></td>
                         </tr>
                     </tfoot>
                 </table>
@@ -331,8 +366,8 @@
                             style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px;">
                             <div class="form-group">
                                 <label class="form-label">No SPK</label>
-                                <input type="text" name="no_spk" class="form-input"
-                                    placeholder="No SPK" value="{{ old('no_spk') }}">
+                                <input type="text" name="no_spk" class="form-input" placeholder="No SPK"
+                                    value="{{ old('no_spk') }}">
                             </div>
                             <div class="form-group">
                                 <label class="form-label">Tgl. Bukti</label>
