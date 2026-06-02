@@ -44,57 +44,6 @@
             <div class="stat-label">Total Konsumen</div>
         </div>
 
-        {{-- Total Debet --}}
-        <div class="stat-card">
-            <div class="stat-icon" style="background:rgba(6,182,212,.15);">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
-                    <polyline points="17 6 23 6 23 12" />
-                </svg>
-            </div>
-            <div class="stat-value" style="color:#06b6d4;">Rp {{ number_format($totalDebet ?? 0, 0, ',', '.') }}</div>
-            <div class="stat-label">Total Mutasi Debet</div>
-        </div>
-
-        {{-- Total Kredit --}}
-        <div class="stat-card">
-            <div class="stat-icon" style="background:rgba(139,92,246,.15);">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="23 18 13.5 8.5 8.5 13.5 1 6" />
-                    <polyline points="17 18 23 18 23 12" />
-                </svg>
-            </div>
-            <div class="stat-value" style="color:#8b5cf6;">Rp {{ number_format($totalKredit ?? 0, 0, ',', '.') }}</div>
-            <div class="stat-label">Total Mutasi Kredit</div>
-        </div>
-
-        {{-- Cabang Aktif --}}
-        <div class="stat-card">
-            <div class="stat-icon" style="background:rgba(245,158,11,.15);">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-                    <circle cx="12" cy="10" r="3" />
-                </svg>
-            </div>
-            <div class="stat-value" style="color:#f59e0b;">{{ $grBranchCount ?? 0 }}</div>
-            <div class="stat-label">Cabang GR Aktif</div>
-        </div>
-
-        {{-- Selisih --}}
-        <div class="stat-card">
-            <div class="stat-icon" style="background:rgba(236,72,153,.15);">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#ec4899" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-                    <polyline points="22 4 12 14.01 9 11.01" />
-                </svg>
-            </div>
-            <div class="stat-value" style="color:#ec4899;">Rp {{ number_format($totalSelisih ?? 0, 0, ',', '.') }}</div>
-            <div class="stat-label">Total Selisih</div>
-        </div>
     </div>
 
     @if (!empty($branchSummaries))
