@@ -62,7 +62,7 @@
                     <th rowspan="2">NO</th>
                     <th rowspan="2">NAMA KONSUMEN</th>
                     <th rowspan="2">TGL. BUKTI</th>
-                    <th rowspan="2">NO. BUKTI</th>
+                    <th rowspan="2">NO. INVOICE</th>
                     <th rowspan="2">SALDO AWAL</th>
                     <th colspan="2">MUTASI</th>
                     <th rowspan="2">TGL. BUKTI</th>
@@ -72,6 +72,7 @@
                     <th rowspan="2">NO POLISI</th>
                     <th rowspan="2">NO POLIS</th>
                     <th rowspan="2">KATEGORI SPK</th>
+                    <th rowspan="2">NAMA ASURANSI</th>
                 </tr>
                 <tr>
                     <th>DEBET</th>
@@ -135,6 +136,7 @@
                         <td>{{ $row->no_polisi }}</td>
                         <td>{{ $row->no_polis }}</td>
                         <td>{{ $row->spk_type }}</td>
+                        <td>{{ $row->spk_type === 'ASURANSI' ? $row->nama_asuransi : '-' }}</td>
                     </tr>
                 @endforeach
                 
@@ -146,7 +148,7 @@
                     <td class="text-right">{{ number_format($totalKredit, 0, ',', ',') }}</td>
                     <td colspan="2"></td>
                     <td class="text-right">{{ number_format($totalSaldoAkhir, 0, ',', ',') }}</td>
-                    <td colspan="4"></td>
+                    <td colspan="5"></td>
                 </tr>
                 <!-- GL Row -->
                 <tr class="summary-row">
@@ -156,7 +158,7 @@
                     <td class="text-right">{{ number_format($totalKredit, 0, ',', ',') }}</td>
                     <td colspan="2"></td>
                     <td class="text-right">{{ number_format($totalSaldoAkhir, 0, ',', ',') }}</td>
-                    <td colspan="4"></td>
+                    <td colspan="5"></td>
                 </tr>
                 <!-- SELISIH Row -->
                 <tr class="summary-row" style="color: red;">
@@ -166,7 +168,7 @@
                     <td class="text-right">-</td>
                     <td colspan="2"></td>
                     <td class="text-right">-</td>
-                    <td colspan="4"></td>
+                    <td colspan="5"></td>
                 </tr>
             </tbody>
         </table>

@@ -37,10 +37,10 @@ class SendWeeklyBranchDataEmail extends Command
             return;
         }
 
-        // Anda bisa menambahkan banyak email ke dalam array ini
+        // Anda bisa menyesuaikan daftar email tujuan di bawah ini
         $emailTujuan = [
             'ahmadmad122131@gmail.com',
-            'heru.dca2023@gmail.com'
+            'm.rizky@smkwikrama.sch.id'
         ];
 
         $this->info('Mengirim email ke beberapa alamat tujuan...');

@@ -145,9 +145,11 @@
                         <tr>
                             <th rowspan="2">NO</th>
                             <th rowspan="2">NO SPK</th>
+                            <th rowspan="2">NAMA KONSUMEN</th>
                             <th rowspan="2">TGL. BUKTI</th>
-                            <th rowspan="2" class="col-bukti">NO. BUKTI</th>
+                            <th rowspan="2" class="col-bukti">NO. INVOICE</th>
                             <th rowspan="2" class="col-spk">KATEGORI SPK</th>
+                            <th rowspan="2">NAMA ASURANSI</th>
                             <th rowspan="2">SALDO AWAL</th>
                             <th colspan="2" style="text-align:center;">MUTASI</th>
                             <th rowspan="2" class="col-rek-tgl">TGL. BUKTI</th>
@@ -237,10 +239,12 @@
 
                             <tr style="{{ $rowStyle }}">
                                 <td style="text-align: center;">{{ $loop->iteration }}.</td>
-                                <td>{{ $row->no_spk ?? ($row->nama_konsumen ?? ($row['no_spk'] ?? '-')) }}</td>
+                                <td>{{ $row->no_spk ?? ($row['no_spk'] ?? '-') }}</td>
+                                <td>{{ $row->nama_konsumen ?? ($row['nama_konsumen'] ?? '-') }}</td>
                                 <td>{{ $tglBukti }}</td>
                                 <td>{{ $row->no_bukti ?? ($row['no_bukti'] ?? '-') }}</td>
                                 <td class="col-spk">{{ strtoupper($row->spk_type ?? ($row['spk_type'] ?? '-')) }}</td>
+                                <td>{{ $row->nama_asuransi ?? ($row['nama_asuransi'] ?? '-') }}</td>
                                 <td class="text-bold">
                                     {{ is_numeric($saldoAwal) ? number_format($saldoAwal, 0, '.', ',') : '-' }}</td>
                                 <td style="color: #111827 !important; font-weight: 800;">
@@ -291,7 +295,7 @@
                     {{-- Bagian Footer / Summary --}}
                     <tfoot>
                         <tr style="background-color: #eff6ff; font-weight: 600;">
-                            <td colspan="5"
+                            <td colspan="7"
                                 style="text-align: right; padding-right: 16px; font-weight: bold; color: #111827;">Total
                             </td>
                             <td style="color: #111827;">{{ number_format($totalSaldoAwal ?? 0, 0, '.', ',') }}</td>
@@ -313,7 +317,7 @@
                             $selisihAkhir = ($totalSaldoAkhir ?? 0) - $glSaldoAkhir;
                         @endphp
                         <tr style="background-color: #f8fafc; font-weight: 600;">
-                            <td colspan="5"
+                            <td colspan="7"
                                 style="text-align: right; padding-right: 16px; font-weight: bold; color: #111827;">GL</td>
                             <td style="color: #111827;">{{ number_format($glSaldoAwal, 0, '.', ',') }}</td>
                             <td style="color: #111827;">{{ number_format($glDebet, 0, '.', ',') }}</td>
@@ -323,7 +327,7 @@
                             <td colspan="3"></td>
                         </tr>
                         <tr style="background-color: #fef2f2; font-weight: 600;">
-                            <td colspan="5"
+                            <td colspan="7"
                                 style="text-align: right; padding-right: 16px; font-weight: bold; color: #dc2626;">SELISIH
                             </td>
                             <td style="color: #dc2626;">
@@ -370,13 +374,18 @@
                                     value="{{ old('no_spk') }}">
                             </div>
                             <div class="form-group">
+                                <label class="form-label">Nama Konsumen</label>
+                                <input type="text" name="nama_konsumen" class="form-input" placeholder="Nama Konsumen"
+                                    value="{{ old('nama_konsumen') }}">
+                            </div>
+                            <div class="form-group">
                                 <label class="form-label">Tgl. Bukti</label>
                                 <input type="date" name="tgl_bukti" class="form-input"
                                     value="{{ old('tgl_bukti') }}">
                             </div>
                             <div class="form-group">
-                                <label class="form-label">No. Bukti</label>
-                                <input type="text" name="no_bukti" class="form-input" placeholder="Nomor bukti"
+                                <label class="form-label">No. Invoice</label>
+                                <input type="text" name="no_bukti" class="form-input" placeholder="Nomor invoice"
                                     value="{{ old('no_bukti') }}">
                             </div>
                             <div class="form-group">
@@ -386,12 +395,17 @@
                             </div>
                             <div class="form-group">
                                 <label class="form-label">KATEGORI SPK</label>
-                                <select class="form-select" name="spk_type" style="width: 100%;">
+                                <select class="form-select" name="spk_type" id="spk_type_select" style="width: 100%;">
                                     <option value="">Pilih Jenis SPK</option>
                                     <option value="ASURANSI">ASURANSI</option>
                                     <option value="REGULER">REGULER</option>
                                     <option value="INTERNAL">INTERNAL</option>
                                 </select>
+                            </div>
+                            <div class="form-group" id="asuransi_field" style="display: none;">
+                                <label class="form-label">Nama Asuransi</label>
+                                <input type="text" name="nama_asuransi" class="form-input" placeholder="Nama Asuransi"
+                                    value="{{ old('nama_asuransi') }}">
                             </div>
                             <div class="form-group">
                                 <label class="form-label">Debet</label>
@@ -477,6 +491,20 @@
                     searchInput.focus();
                 }
             });
+
+            // Tampilkan field Nama Asuransi jika memilih ASURANSI
+            const spkTypeSelect = document.getElementById('spk_type_select');
+            const asuransiField = document.getElementById('asuransi_field');
+            if (spkTypeSelect && asuransiField) {
+                spkTypeSelect.addEventListener('change', function() {
+                    if (this.value === 'ASURANSI') {
+                        asuransiField.style.display = 'block';
+                    } else {
+                        asuransiField.style.display = 'none';
+                        asuransiField.querySelector('input').value = ''; // Reset value
+                    }
+                });
+            }
         });
     </script>
 @endsection

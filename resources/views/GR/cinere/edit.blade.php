@@ -113,6 +113,11 @@
                             value="{{ old('no_spk', $record->no_spk ?? ($record['no_spk'] ?? '')) }}">
                     </div>
                     <div class="form-group">
+                        <label class="form-label">Nama Konsumen</label>
+                        <input type="text" name="nama_konsumen" class="form-input"
+                            value="{{ old('nama_konsumen', $record->nama_konsumen ?? ($record['nama_konsumen'] ?? '')) }}">
+                    </div>
+                    <div class="form-group">
                         <label class="form-label">No. Polisi (Plat)</label>
                         <input type="text" name="no_polisi" class="form-input"
                             value="{{ old('no_polisi', $record->no_polisi ?? ($record['no_polisi'] ?? '')) }}">
@@ -150,7 +155,7 @@
                             value="{{ old('tgl_bukti', isset($record->tgl_bukti) ? \Illuminate\Support\Carbon::parse($record->tgl_bukti)->format('Y-m-d') : $record['tgl_bukti'] ?? '') }}">
                     </div>
                     <div class="form-group">
-                        <label class="form-label">No. Bukti Utama</label>
+                        <label class="form-label">No. Invoice Utama</label>
                         <input type="text" name="no_bukti" class="form-input"
                             value="{{ old('no_bukti', $record->no_bukti ?? ($record['no_bukti'] ?? '')) }}">
                     </div>

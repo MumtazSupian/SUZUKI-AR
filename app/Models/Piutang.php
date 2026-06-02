@@ -12,6 +12,7 @@ class Piutang extends Model
     protected $fillable = [
         'branch',
         'nama_konsumen',
+        'nama_asuransi',
         'tgl_bukti',
         'no_bukti',
         'saldo_awal',

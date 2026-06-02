@@ -197,6 +197,7 @@ class PiutangController extends Controller
     {
         return $request->validate([
             'nama_konsumen' => ['nullable', 'string', 'max:255'],
+            'nama_asuransi' => ['nullable', 'string', 'max:255'],
             'tgl_bukti' => ['nullable', 'date'],
             'no_bukti' => ['nullable', 'string', 'max:100'],
             'saldo_awal' => ['nullable', 'numeric'],

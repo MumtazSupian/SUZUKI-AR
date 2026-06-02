@@ -113,6 +113,11 @@
                             value="{{ old('no_spk', $record->no_spk ?? ($record['no_spk'] ?? '')) }}">
                     </div>
                     <div class="form-group">
+                        <label class="form-label">Nama Konsumen</label>
+                        <input type="text" name="nama_konsumen" class="form-input"
+                            value="{{ old('nama_konsumen', $record->nama_konsumen ?? ($record['nama_konsumen'] ?? '')) }}">
+                    </div>
+                    <div class="form-group">
                         <label class="form-label">No. Polisi (Plat)</label>
                         <input type="text" name="no_polisi" class="form-input"
                             value="{{ old('no_polisi', $record->no_polisi ?? ($record['no_polisi'] ?? '')) }}">
@@ -136,7 +141,7 @@
                             value="{{ old('tgl_bukti', isset($record->tgl_bukti) ? \Illuminate\Support\Carbon::parse($record->tgl_bukti)->format('Y-m-d') : $record['tgl_bukti'] ?? '') }}">
                     </div>
                     <div class="form-group">
-                        <label class="form-label">No. Bukti Utama</label>
+                        <label class="form-label">No. Invoice Utama</label>
                         <input type="text" name="no_bukti" class="form-input"
                             value="{{ old('no_bukti', $record->no_bukti ?? ($record['no_bukti'] ?? '')) }}">
                     </div>
@@ -159,6 +164,11 @@
                                 {{ old('spk_type', $record->spk_type ?? ($record['spk_type'] ?? '')) == 'INTERNAL' ? 'selected' : '' }}>
                                 INTERNAL</option>
                         </select>
+                    </div>
+                    <div class="form-group" id="asuransi_field_edit" style="display: none;">
+                        <label class="form-label">Nama Asuransi</label>
+                        <input type="text" name="nama_asuransi" class="form-input"
+                            value="{{ old('nama_asuransi', $record->nama_asuransi ?? ($record['nama_asuransi'] ?? '')) }}">
                     </div>
                     <div class="form-group">
                         <label class="form-label">Debet</label>
@@ -281,9 +291,26 @@
                 }
 
                 document.addEventListener('DOMContentLoaded', () => {
+                    const asuransiField = document.getElementById('asuransi_field_edit');
+                    
+                    function updateAsuransiVisibility() {
+                        if (spkTypeSelect && asuransiField) {
+                            if (spkTypeSelect.value === 'ASURANSI') {
+                                asuransiField.style.display = 'block';
+                            } else {
+                                asuransiField.style.display = 'none';
+                                asuransiField.querySelector('input').value = ''; // Reset value
+                            }
+                        }
+                    }
+
                     if (spkTypeSelect) {
-                        spkTypeSelect.addEventListener('change', updatePaymentStageVisibility);
+                        spkTypeSelect.addEventListener('change', () => {
+                            updatePaymentStageVisibility();
+                            updateAsuransiVisibility();
+                        });
                         updatePaymentStageVisibility();
+                        updateAsuransiVisibility();
                     }
                 });
             </script>
