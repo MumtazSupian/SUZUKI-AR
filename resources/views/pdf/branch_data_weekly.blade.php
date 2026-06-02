@@ -88,15 +88,30 @@
                 @endphp
                 @foreach($data as $row)
                     @php
-                        // Determine row color based on spk_type
+                        // Determine row color based on spk_type dan waktu
                         $rowColor = '';
                         $spkType = strtoupper($row->spk_type);
-                        if ($spkType == 'REGULER') {
-                            $rowColor = 'bg-reguler';
-                        } elseif ($spkType == 'ASURANSI') {
-                            $rowColor = 'bg-asuransi';
+                        $selisihHari = 0;
+                        if ($row->tgl_bukti) {
+                            $hariIni = \Illuminate\Support\Carbon::now('Asia/Jakarta')->startOfDay();
+                            $tanggalInput = \Illuminate\Support\Carbon::parse($row->tgl_bukti, 'Asia/Jakarta')->startOfDay();
+                            $selisihHari = $tanggalInput->diffInDays($hariIni);
+                        }
+                        
+                        if ($spkType == 'ASURANSI') {
+                            if ($selisihHari >= 35) {
+                                $rowColor = 'bg-asuransi'; // merah
+                            } else {
+                                $rowColor = 'bg-internal'; // hijau
+                            }
+                        } elseif ($spkType == 'REGULER') {
+                            if ($selisihHari >= 7) {
+                                $rowColor = 'bg-asuransi'; // merah
+                            } else {
+                                $rowColor = 'bg-internal'; // hijau
+                            }
                         } elseif ($spkType == 'INTERNAL') {
-                            $rowColor = 'bg-internal';
+                            $rowColor = ''; // biasa saja
                         }
 
                         // Add to totals

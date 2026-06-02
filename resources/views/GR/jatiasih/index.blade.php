@@ -193,19 +193,23 @@
                                     // Hitung selisih hari
                                     $selisihHari = $tanggalInput->diffInDays($hariIni);
 
-                                    // 2. LOGIC PEWARNAAN BERDASARKAN WAKTU
-                                    if ($selisihHari > 30) {
-                                        // Lebih dari 30 hari (Sebulan yang lalu) -> MERAH
-                                        $rowStyle =
-                                            'background-color: #f87171 !important; color: #111827 !important; font-weight: 600;';
-                                    } elseif ($selisihHari >= 14) {
-                                        // Sudah lewat 14 hari sampai 30 hari (2 minggu - sebulan) -> KUNING
-                                        $rowStyle =
-                                            'background-color: #fde047 !important; color: #111827 !important; font-weight: 600;';
-                                    } else {
-                                        // Kurang dari 14 hari (Inputan baru / di bawah 2 minggu) -> HIJAU
-                                        $rowStyle =
-                                            'background-color: #4ade80 !important; color: #111827 !important; font-weight: 600;';
+                                    // 2. LOGIC PEWARNAAN BERDASARKAN WAKTU DAN KATEGORI SPK
+                                    $kategoriSpk = strtoupper($row->spk_type ?? ($row['spk_type'] ?? ''));
+                                    
+                                    if ($kategoriSpk === 'ASURANSI') {
+                                        if ($selisihHari >= 35) {
+                                            $rowStyle = 'background-color: #f87171 !important; color: #111827 !important; font-weight: 600;';
+                                        } else {
+                                            $rowStyle = 'background-color: #4ade80 !important; color: #111827 !important; font-weight: 600;';
+                                        }
+                                    } elseif ($kategoriSpk === 'REGULER') {
+                                        if ($selisihHari >= 7) {
+                                            $rowStyle = 'background-color: #f87171 !important; color: #111827 !important; font-weight: 600;';
+                                        } else {
+                                            $rowStyle = 'background-color: #4ade80 !important; color: #111827 !important; font-weight: 600;';
+                                        }
+                                    } elseif ($kategoriSpk === 'INTERNAL') {
+                                        // Biasa saja, tidak ada perubahan warna dari default
                                     }
                                 }
                             @endphp
@@ -388,15 +392,6 @@
                                 <label class="form-label">No Polis</label>
                                 <input type="text" name="no_polis" class="form-input" placeholder="Nomor polis"
                                     value="{{ old('no_polis') }}">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">KATEGORI SPK</label>
-                                <select class="form-select" name="spk_type" style="width: 100%;">
-                                    <option value="">Pilih Jenis SPK</option>
-                                    <option value="ASURANSI">ASURANSI</option>
-                                    <option value="REGULER">REGULER</option>
-                                    <option value="INTERNAL">INTERNAL</option>
-                                </select>
                             </div>
                             <div class="form-group full-width" style="grid-column: 1 / -1;">
                                 <label class="form-label">Saldo Akhir</label>

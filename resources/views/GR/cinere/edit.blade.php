@@ -1,4 +1,4 @@
-﻿@extends('layouts.app')
+@extends('layouts.app')
 
 @section('title', 'GR Cinere - Edit Piutang')
 
@@ -142,15 +142,6 @@
                 <div class="form-group">
                     <label class="form-label">Saldo Pembukuan (Awal)</label>
                     <input type="text" name="saldo_awal" class="form-input" value="{{ old('saldo_awal', $record->saldo_awal ?? ($record['saldo_awal'] ?? '')) }}">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">KATEGORI SPK</label>
-                    <select class="form-select" name="spk_type">
-                        <option value="">Pilih Jenis SPK</option>
-                        <option value="ASURANSI" {{ old('spk_type', $record->spk_type ?? ($record['spk_type'] ?? '')) == 'ASURANSI' ? 'selected' : '' }}>ASURANSI</option>
-                        <option value="REGULER" {{ old('spk_type', $record->spk_type ?? ($record['spk_type'] ?? '')) == 'REGULER' ? 'selected' : '' }}>REGULER</option>
-                        <option value="INTERNAL" {{ old('spk_type', $record->spk_type ?? ($record['spk_type'] ?? '')) == 'INTERNAL' ? 'selected' : '' }}>INTERNAL</option>
-                    </select>
                 </div>
                 <div class="form-group">
                     <label class="form-label">Debet</label>
