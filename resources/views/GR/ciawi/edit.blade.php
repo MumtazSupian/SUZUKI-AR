@@ -10,7 +10,7 @@
             <div>
                 <h1 class="page-title"
                     style="color: #dc2626 !important; font-weight: 700 !important; font-size: 20px; margin: 0;">Edit Data
-                    Piutang - GR Ciawi</h1>
+                    Piutang - BP</h1>
                 <p class="page-subtitle" style="color: #6b7280; font-size: 12px; margin-top: 2px;">Perbarui detail piutang
                     konsumen cabang Ciawi.</p>
             </div>
@@ -45,6 +45,10 @@
                 font-size: 12px !important;
                 margin-bottom: 4px !important;
                 display: block;
+            }
+
+            input[type="text"].form-input {
+                text-transform: uppercase;
             }
 
             .form-input,
@@ -127,21 +131,7 @@
                         <input type="text" name="no_polis" class="form-input"
                             value="{{ old('no_polis', $record->no_polis ?? ($record['no_polis'] ?? '')) }}">
                     </div>
-                    <div class="form-group">
-                        <label class="form-label">Kategori SPK</label>
-                        <select class="form-select" name="spk_type" id="spkTypeSelect">
-                            <option value="">Pilih Jenis SPK</option>
-                            <option value="ASURANSI"
-                                {{ old('spk_type', $record->spk_type ?? ($record['spk_type'] ?? '')) == 'ASURANSI' ? 'selected' : '' }}>
-                                ASURANSI</option>
-                            <option value="REGULER"
-                                {{ old('spk_type', $record->spk_type ?? ($record['spk_type'] ?? '')) == 'REGULER' ? 'selected' : '' }}>
-                                REGULER</option>
-                            <option value="INTERNAL"
-                                {{ old('spk_type', $record->spk_type ?? ($record['spk_type'] ?? '')) == 'INTERNAL' ? 'selected' : '' }}>
-                                INTERNAL</option>
-                        </select>
-                    </div>
+
                 </div>
             </div>
 
@@ -165,6 +155,26 @@
                             value="{{ old('saldo_awal', $record->saldo_awal ?? ($record['saldo_awal'] ?? '')) }}">
                     </div>
                     <div class="form-group">
+                        <label class="form-label">KATEGORI SPK</label>
+                        <select class="form-select" name="spk_type" id="spkTypeSelect">
+                            <option value="">Pilih Jenis SPK</option>
+                            <option value="ASURANSI"
+                                {{ old('spk_type', $record->spk_type ?? ($record['spk_type'] ?? '')) == 'ASURANSI' ? 'selected' : '' }}>
+                                ASURANSI</option>
+                            <option value="REGULER"
+                                {{ old('spk_type', $record->spk_type ?? ($record['spk_type'] ?? '')) == 'REGULER' ? 'selected' : '' }}>
+                                REGULER</option>
+                            <option value="INTERNAL"
+                                {{ old('spk_type', $record->spk_type ?? ($record['spk_type'] ?? '')) == 'INTERNAL' ? 'selected' : '' }}>
+                                INTERNAL</option>
+                        </select>
+                    </div>
+                    <div class="form-group" id="asuransi_field_edit" style="display: none;">
+                        <label class="form-label">Nama Asuransi</label>
+                        <input type="text" name="nama_asuransi" class="form-input"
+                            value="{{ old('nama_asuransi', $record->nama_asuransi ?? ($record['nama_asuransi'] ?? '')) }}">
+                    </div>
+                    <div class="form-group">
                         <label class="form-label">Debet</label>
                         <input type="text" name="debet" class="form-input"
                             value="{{ old('debet', $record->debet ?? ($record['debet'] ?? '')) }}">
@@ -183,16 +193,11 @@
                     Akhir</span>
 
                 <div id="paymentStage1" class="payment-stage" data-stage="1"
-                    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-bottom: 10px;">
+                    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; margin-bottom: 10px;">
                     <div class="form-group">
-                        <label class="form-label">Tgl. Bukti (Rekonsiliasi) Tahap 1</label>
+                        <label class="form-label">Tgl. Rekonsiliasi Tahap 1</label>
                         <input type="date" name="tgl_bukti_rek" class="form-input"
                             value="{{ old('tgl_bukti_rek', isset($record->tgl_bukti_rek) ? \Illuminate\Support\Carbon::parse($record->tgl_bukti_rek)->format('Y-m-d') : $record['tgl_bukti_rek'] ?? '') }}">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">No. Bukti (Rekonsiliasi) Tahap 1</label>
-                        <input type="text" name="no_bukti_rek" class="form-input"
-                            value="{{ old('no_bukti_rek', $record->no_bukti_rek ?? ($record['no_bukti_rek'] ?? '')) }}">
                     </div>
                     <div class="form-group">
                         <label class="form-label">Keterangan Tahap 1</label>
@@ -202,16 +207,11 @@
                 </div>
 
                 <div id="paymentStage2" class="payment-stage" data-stage="2"
-                    style="display: none; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-bottom: 10px;">
+                    style="display: none; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; margin-bottom: 10px;">
                     <div class="form-group">
-                        <label class="form-label">Tgl. Bukti Rekonsiliasi Tahap 2</label>
+                        <label class="form-label">Tgl. Rekonsiliasi Tahap 2</label>
                         <input type="date" name="tgl_bukti_rek_2" class="form-input"
                             value="{{ old('tgl_bukti_rek_2', isset($record->tgl_bukti_rek_2) ? \Illuminate\Support\Carbon::parse($record->tgl_bukti_rek_2)->format('Y-m-d') : $record['tgl_bukti_rek_2'] ?? '') }}">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">No. Bukti Rekonsiliasi Tahap 2</label>
-                        <input type="text" name="no_bukti_rek_2" class="form-input"
-                            value="{{ old('no_bukti_rek_2', $record->no_bukti_rek_2 ?? ($record['no_bukti_rek_2'] ?? '')) }}">
                     </div>
                     <div class="form-group">
                         <label class="form-label">Keterangan Tahap 2</label>
@@ -221,16 +221,11 @@
                 </div>
 
                 <div id="paymentStage3" class="payment-stage" data-stage="3"
-                    style="display: none; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-bottom: 10px;">
+                    style="display: none; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; margin-bottom: 10px;">
                     <div class="form-group">
-                        <label class="form-label">Tgl. Bukti Rekonsiliasi Tahap 3</label>
+                        <label class="form-label">Tgl. Rekonsiliasi Tahap 3</label>
                         <input type="date" name="tgl_bukti_rek_3" class="form-input"
                             value="{{ old('tgl_bukti_rek_3', isset($record->tgl_bukti_rek_3) ? \Illuminate\Support\Carbon::parse($record->tgl_bukti_rek_3)->format('Y-m-d') : $record['tgl_bukti_rek_3'] ?? '') }}">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">No. Bukti Rekonsiliasi Tahap 3</label>
-                        <input type="text" name="no_bukti_rek_3" class="form-input"
-                            value="{{ old('no_bukti_rek_3', $record->no_bukti_rek_3 ?? ($record['no_bukti_rek_3'] ?? '')) }}">
                     </div>
                     <div class="form-group">
                         <label class="form-label">Keterangan Tahap 3</label>
@@ -286,7 +281,7 @@
 
                 document.addEventListener('DOMContentLoaded', () => {
                     const asuransiField = document.getElementById('asuransi_field_edit');
-                    
+
                     function updateAsuransiVisibility() {
                         if (spkTypeSelect && asuransiField) {
                             if (spkTypeSelect.value === 'ASURANSI') {
@@ -298,6 +293,16 @@
                         }
                     }
 
+                    function forceUppercaseInputs(form) {
+                        form.querySelectorAll('input[type="text"]').forEach(input => {
+                            input.addEventListener('input', () => {
+                                const cursorPos = input.selectionStart;
+                                input.value = input.value.toUpperCase();
+                                input.setSelectionRange(cursorPos, cursorPos);
+                            });
+                        });
+                    }
+
                     if (spkTypeSelect) {
                         spkTypeSelect.addEventListener('change', () => {
                             updatePaymentStageVisibility();
@@ -305,6 +310,11 @@
                         });
                         updatePaymentStageVisibility();
                         updateAsuransiVisibility();
+                    }
+
+                    const editForm = document.querySelector('form');
+                    if (editForm) {
+                        forceUppercaseInputs(editForm);
                     }
                 });
             </script>

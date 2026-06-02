@@ -152,14 +152,11 @@
                             <th rowspan="2">NAMA ASURANSI</th>
                             <th rowspan="2">SALDO AWAL</th>
                             <th colspan="2" style="text-align:center;">MUTASI</th>
-                            <th rowspan="2" class="col-rek-tgl">TGL. BUKTI</th>
-                            <th rowspan="2" class="hl col-rek-no">NO. BUKTI</th>
+                            <th rowspan="2" class="col-rek-tgl">TGL. REKONSILIASI</th>
                             <th rowspan="2" class="col-keterangan">KETERANGAN</th>
-                            <th rowspan="2">TGL. BUKTI TAHAP 2</th>
-                            <th rowspan="2">NO. BUKTI TAHAP 2</th>
+                            <th rowspan="2">TGL. REKONSILIASI TAHAP 2</th>
                             <th rowspan="2">KETERANGAN TAHAP 2</th>
-                            <th rowspan="2">TGL. BUKTI TAHAP 3</th>
-                            <th rowspan="2">NO. BUKTI TAHAP 3</th>
+                            <th rowspan="2">TGL. REKONSILIASI TAHAP 3</th>
                             <th rowspan="2">KETERANGAN TAHAP 3</th>
                             <th rowspan="2">SALDO AKHIR</th>
                             <th rowspan="2" class="col-no-polisi">NO POLISI</th>
@@ -252,15 +249,12 @@
                                 <td style="color: #111827 !important; font-weight: 800;">
                                     {{ is_numeric($kredit) ? number_format($kredit, 0, '.', ',') : '-' }}</td>
                                 <td class="col-rek-tgl">{{ $tglRek }}</td>
-                                <td class="col-rek-no">{{ $row->no_bukti_rek ?? ($row['no_bukti_rek'] ?? '-') }}</td>
                                 <td class="col-keterangan">{{ $row->keterangan ?? ($row['keterangan'] ?? '-') }}</td>
 
                                 <td class="col-rek-tgl">{{ $tglRek2 }}</td>
-                                <td class="col-rek-no">{{ $row->no_bukti_rek_2 ?? ($row['no_bukti_rek_2'] ?? '-') }}</td>
                                 <td class="col-keterangan">{{ $row->keterangan_2 ?? ($row['keterangan_2'] ?? '-') }}</td>
 
                                 <td class="col-rek-tgl">{{ $tglRek3 }}</td>
-                                <td class="col-rek-no">{{ $row->no_bukti_rek_3 ?? ($row['no_bukti_rek_3'] ?? '-') }}</td>
                                 <td class="col-keterangan">{{ $row->keterangan_3 ?? ($row['keterangan_3'] ?? '-') }}</td>
 
                                 <td class="text-bold">
@@ -300,7 +294,7 @@
                             <td style="color: #111827;">{{ number_format($totalSaldoAwal ?? 0, 0, '.', ',') }}</td>
                             <td style="color: #111827;">{{ number_format($totalDebet ?? 0, 0, '.', ',') }}</td>
                             <td style="color: #111827;">{{ number_format($totalKredit ?? 0, 0, '.', ',') }}</td>
-                            <td colspan="9"></td>
+                            <td colspan="6"></td>
                             <td style="color: #111827;">{{ number_format($totalSaldoAkhir ?? 0, 0, '.', ',') }}</td>
                             <td colspan="3"></td>
                         </tr>
@@ -321,7 +315,7 @@
                             <td style="color: #111827;">{{ number_format($glSaldoAwal, 0, '.', ',') }}</td>
                             <td style="color: #111827;">{{ number_format($glDebet, 0, '.', ',') }}</td>
                             <td style="color: #111827;">{{ number_format($glKredit, 0, '.', ',') }}</td>
-                            <td colspan="9"></td>
+                            <td colspan="6"></td>
                             <td style="color: #111827;">{{ number_format($glSaldoAkhir, 0, '.', ',') }}</td>
                             <td colspan="3"></td>
                         </tr>
@@ -335,7 +329,7 @@
                                 {{ $selisihDebet == 0 ? '-' : number_format($selisihDebet, 0, '.', ',') }}</td>
                             <td style="color: #dc2626;">
                                 {{ $selisihKredit == 0 ? '-' : number_format($selisihKredit, 0, '.', ',') }}</td>
-                            <td colspan="9"></td>
+                            <td colspan="6"></td>
                             <td style="color: #dc2626;">
                                 {{ $selisihAkhir == 0 ? '-' : number_format($selisihAkhir, 0, '.', ',') }}</td>
                             <td colspan="3"></td>
@@ -374,8 +368,8 @@
                             </div>
                             <div class="form-group">
                                 <label class="form-label">Nama Konsumen</label>
-                                <input type="text" name="nama_konsumen" class="form-input" placeholder="Nama Konsumen"
-                                    value="{{ old('nama_konsumen') }}">
+                                <input type="text" name="nama_konsumen" class="form-input"
+                                    placeholder="Nama Konsumen" value="{{ old('nama_konsumen') }}">
                             </div>
                             <div class="form-group">
                                 <label class="form-label">Tgl. Bukti</label>
@@ -403,8 +397,8 @@
                             </div>
                             <div class="form-group" id="asuransi_field" style="display: none;">
                                 <label class="form-label">Nama Asuransi</label>
-                                <input type="text" name="nama_asuransi" class="form-input" placeholder="Nama Asuransi"
-                                    value="{{ old('nama_asuransi') }}">
+                                <input type="text" name="nama_asuransi" class="form-input"
+                                    placeholder="Nama Asuransi" value="{{ old('nama_asuransi') }}">
                             </div>
                             <div class="form-group">
                                 <label class="form-label">Debet</label>
@@ -417,14 +411,9 @@
                                     value="{{ old('kredit') }}">
                             </div>
                             <div class="form-group">
-                                <label class="form-label">Tgl. Bukti (Rekonsiliasi)</label>
+                                <label class="form-label">Tgl. Rekonsiliasi</label>
                                 <input type="date" name="tgl_bukti_rek" class="form-input"
                                     value="{{ old('tgl_bukti_rek') }}">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">No. Bukti (Rekonsiliasi)</label>
-                                <input type="text" name="no_bukti_rek" class="form-input" placeholder="Nomor bukti"
-                                    value="{{ old('no_bukti_rek') }}">
                             </div>
                             <div class="form-group">
                                 <label class="form-label">Keterangan</label>
@@ -491,6 +480,16 @@
                 }
             });
 
+            function forceUppercaseInputs(form) {
+                form.querySelectorAll('input[type="text"]').forEach(input => {
+                    input.addEventListener('input', () => {
+                        const cursorPos = input.selectionStart;
+                        input.value = input.value.toUpperCase();
+                        input.setSelectionRange(cursorPos, cursorPos);
+                    });
+                });
+            }
+
             // Tampilkan field Nama Asuransi jika memilih ASURANSI
             const spkTypeSelect = document.getElementById('spk_type_select');
             const asuransiField = document.getElementById('asuransi_field');
@@ -503,6 +502,11 @@
                         asuransiField.querySelector('input').value = ''; // Reset value
                     }
                 });
+            }
+
+            const createForm = document.getElementById('createForm');
+            if (createForm) {
+                forceUppercaseInputs(createForm);
             }
         });
     </script>
